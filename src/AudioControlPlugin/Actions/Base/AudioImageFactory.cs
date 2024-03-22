@@ -267,7 +267,7 @@
             {
                 if (audioData.NotFound)
                 {
-                    return PluginImage.DrawTextImage("Not found", imageSize);
+                    return PluginImage.DrawTextImage("Not found", false, imageSize);
                 }
                 else
                 {

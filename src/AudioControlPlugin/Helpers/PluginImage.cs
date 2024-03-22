@@ -134,13 +134,13 @@
             }
         }
 
-        public static BitmapImage DrawTextImage(string buttonName, PluginImageSize imageSize)
+        public static BitmapImage DrawTextImage(string buttonName, bool bold, PluginImageSize imageSize)
         {
             PluginImage.GetImageSize(imageSize, out int imageWidth, out int imageHeight);
             using (Bitmap image = new Bitmap(imageWidth, imageHeight))
             using (Graphics graphics = Graphics.FromImage(image))
-            using (Font calibri10Font = new Font("Calibri", 12, FontStyle.Regular))
-            using (Brush whiteBrush = new SolidBrush(Color.White.BlueFilter()))
+            using (Font calibri10Font = new Font("Calibri", 12, bold ? FontStyle.Bold : FontStyle.Regular))
+            using (Brush whiteBrush = new SolidBrush(Color.White.BlueLightFilter()))
             using (StringFormat format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
             {
                 graphics.Clear(Color.Black);

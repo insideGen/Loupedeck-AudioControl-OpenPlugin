@@ -166,7 +166,7 @@
                     {
                         pageActionParameter = "Exit";
                     }
-                    return PluginImage.DrawTextImage(pageActionParameter, imageSize);
+                    return PluginImage.DrawTextImage(pageActionParameter, false, imageSize);
                 }
                 else
                 {

@@ -74,12 +74,12 @@
 
         public virtual BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
-            return PluginImage.DrawTextImage(actionParameter, imageSize);
+            return PluginImage.DrawTextImage(actionParameter, false, imageSize);
         }
 
         public virtual BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
         {
-            return PluginImage.DrawTextImage(actionParameter, imageSize);
+            return PluginImage.DrawTextImage(actionParameter, false, imageSize);
         }
 
         public virtual void ApplyAdjustment(string actionParameter, int diff)

@@ -32,7 +32,7 @@
             {
                 return PluginImage.DrawTextImage(audioControl.DisplayName, imageSize);
             }
-            return PluginImage.DrawTextImage(actionParameter, imageSize);
+            return PluginImage.DrawTextImage(actionParameter, true, imageSize);
         }
 
         public override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
