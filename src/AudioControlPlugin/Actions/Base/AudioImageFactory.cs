@@ -88,47 +88,24 @@
                 if (iconPath.StartsWith('@'))
                 {
                     iconPath = iconPath.Substring(1);
-                    string color = null;
-                    if (iconPath.Contains(','))
-                    {
-                        color = iconPath.Split(',')[1];
-                        iconPath = iconPath.Split(',')[0];
-                    }
-                    iconBitmap = PluginImage.ReadBitmap(iconPath);
+                    string[] values = iconPath.Split(',');
+                    string path = values[0];
+                    string color = values.Length > 1 ? values[1] : null;
+                    iconBitmap = PluginImage.ReadBitmap(path);
                     if (iconBitmap != null && !string.IsNullOrEmpty(color))
                     {
                         iconBitmap = iconBitmap.Recolor(Color.FromName(color));
                     }
                 }
-                // Dynamic Link Library
-                else if (iconPath.Contains(','))
-                {
-                    string path = iconPath.Split(',')[0];
-                    int index = int.Parse(iconPath.Split(',')[1]);
-                    try
-                    {
-                        Shell32.ExtractIconEx(path, index, out IntPtr large, out IntPtr small, 1);
-                        iconBitmap = Icon.FromHandle(large).ToBitmap().BlueFilter();
-                        User32.DestroyIcon(large);
-                    }
-                    catch
-                    {
-                        iconBitmap = null;
-                    }
-                }
-                // File
+                // File resource
                 else
                 {
-                    try
+                    using (Icon icon = PluginImage.GetIcon(iconPath))
                     {
-                        using (Icon icon = Icon.ExtractAssociatedIcon(iconPath))
+                        if (icon != null)
                         {
-                            iconBitmap = icon.ToBitmap().BlueFilter();
-                        } 
-                    }
-                    catch
-                    {
-                        iconBitmap = null;
+                            iconBitmap = icon.ToBitmap().BlueLightFilter();
+                        }
                     }
                 }
             }

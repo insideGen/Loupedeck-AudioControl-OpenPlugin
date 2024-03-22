@@ -4,8 +4,46 @@
     using System.Drawing;
     using System.IO;
 
+    using WindowsCoreAudio.API;
+
     internal static class PluginImage
     {
+        public static Bitmap ToBitmap(BitmapImage image)
+        {
+            using (MemoryStream stream = new MemoryStream(image.ToArray()))
+            {
+                return new Bitmap(stream);
+            }
+        }
+
+        public static Bitmap ReadBitmap(string bitmapName)
+        {
+            using (BitmapImage image = PluginResources.ReadImage(bitmapName))
+            {
+                return ToBitmap(image);
+            }
+        }
+
+        public static BitmapImage ToBitmapImage(Bitmap image)
+        {
+            //if (PluginSettings.SaveImageOnDisk)
+            //{
+            //    if (!string.IsNullOrEmpty(PluginData.Directory))
+            //    {
+            //        string path = Path.Combine(PluginData.Directory, DateTime.Now.GetTotalMilliseconds() + ".png");
+            //        try
+            //        {
+            //            image.Save(path, ImageFormat.Png);
+            //        }
+            //        catch
+            //        {
+            //        }
+            //    }
+            //}
+            ImageConverter converter = new ImageConverter();
+            return BitmapImage.FromArray((byte[])converter.ConvertTo(image, typeof(byte[])));
+        }
+
         public static void GetImageSize(PluginImageSize imageSize, out int imageWidth, out int imageHeight)
         {
             if (imageSize == PluginImageSize.Width60)
@@ -163,40 +201,40 @@
             }
         }
 
-        public static Bitmap ToBitmap(BitmapImage image)
+        public static Icon GetIcon(string iconPath)
         {
-            using (MemoryStream stream = new MemoryStream(image.ToArray()))
+            Icon icon = null;
+            if (!string.IsNullOrEmpty(iconPath))
             {
-                return new Bitmap(stream);
+                string[] values = iconPath.Split(',');
+                string path = values[0];
+                if (path.EndsWithNoCase(".dll"))
+                {
+                    try
+                    {
+                        int index = values.Length > 1 && int.TryParse(values[1], out index) ? index : 0;
+                        Shell32.ExtractIconEx(path, index, out IntPtr large, out IntPtr small, 1);
+                        User32.DestroyIcon(small);
+                        icon = Icon.FromHandle(large);
+                    }
+                    catch
+                    {
+                        icon = null;
+                    }
+                }
+                else if (path.EndsWithNoCase(".exe"))
+                {
+                    try
+                    {
+                        icon = Icon.ExtractAssociatedIcon(iconPath);
+                    }
+                    catch
+                    {
+                        icon = null;
+                    }
+                }
             }
-        }
-
-        public static Bitmap ReadBitmap(string bitmapName)
-        {
-            using (BitmapImage image = PluginResources.ReadImage(bitmapName))
-            {
-                return ToBitmap(image);
-            }
-        }
-
-        public static BitmapImage ToBitmapImage(Bitmap image)
-        {
-            //if (PluginSettings.SaveImageOnDisk)
-            //{
-            //    if (!string.IsNullOrEmpty(PluginData.Directory))
-            //    {
-            //        string path = Path.Combine(PluginData.Directory, DateTime.Now.GetTotalMilliseconds() + ".png");
-            //        try
-            //        {
-            //            image.Save(path, ImageFormat.Png);
-            //        }
-            //        catch
-            //        {
-            //        }
-            //    }
-            //}
-            ImageConverter converter = new ImageConverter();
-            return BitmapImage.FromArray((byte[])converter.ConvertTo(image, typeof(byte[])));
+            return icon;
         }
     }
 }
