@@ -32,14 +32,14 @@
             using (Graphics graphics = Graphics.FromImage(image))
             using (Font calibri10Font = new Font("Calibri", 10, FontStyle.Regular))
             using (Brush orangeBrush = new SolidBrush(Color.Orange))
-            using (Brush whiteBrush = new SolidBrush(Color.White.BlueFilter()))
+            using (Brush whiteBrush = new SolidBrush(Color.White.BlueLightFilter()))
             using (StringFormat format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
             {
                 graphics.Clear(Color.Black);
                 graphics.DrawString(displayName, calibri10Font, whiteBrush, new RectangleF(2, 14, 76, 24), format);
                 using (Bitmap icon = PluginImage.ReadBitmap(iconPath))
                 {
-                    icon.Recolor(Color.White.BlueFilter());
+                    icon.Recolor(Color.White.BlueLightFilter());
                     graphics.DrawImage(icon, (image.Width - icon.Width) / 2, 37, icon.Width, icon.Height);
                 }
                 return PluginImage.ToBitmapImage(image);

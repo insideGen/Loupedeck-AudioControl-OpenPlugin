@@ -15,7 +15,7 @@
             return Color.FromArgb(color.A, r, g, b);
         }
 
-        public static Color BlueFilter(this Color color)
+        public static Color BlueLightFilter(this Color color)
         {
             if (PluginSettings.BlueLightFilterEnabled)
             {
@@ -24,7 +24,7 @@
             return color;
         }
 
-        public static Bitmap BlueFilter(this Bitmap bitmap)
+        public static Bitmap BlueLightFilter(this Bitmap bitmap)
         {
             if (PluginSettings.BlueLightFilterEnabled)
             {
@@ -34,7 +34,7 @@
                     {
 
                         Color oldColor = bitmap.GetPixel(x, y);
-                        Color newColor = oldColor.BlueFilter();
+                        Color newColor = oldColor.BlueLightFilter();
                         bitmap.SetPixel(x, y, newColor);
                     }
                 }

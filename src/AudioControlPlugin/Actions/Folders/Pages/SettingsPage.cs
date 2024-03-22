@@ -81,7 +81,7 @@
             using (Graphics graphics = Graphics.FromImage(image))
             using (Font settingFont = new Font("Calibri", 11, FontStyle.Regular))
             using (Font valueFont = new Font("Calibri", 11, FontStyle.Bold))
-            using (Brush whiteBrush = new SolidBrush(Color.White.BlueFilter()))
+            using (Brush whiteBrush = new SolidBrush(Color.White.BlueLightFilter()))
             using (Pen whitePen = new Pen(whiteBrush))
             using (StringFormat format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
             {

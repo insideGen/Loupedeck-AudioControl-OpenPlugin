@@ -45,8 +45,8 @@
             this.calibri7Font = new Font("Calibri", 7, FontStyle.Regular);
             this.calibri10Font = new Font("Calibri", 10, FontStyle.Regular);
             this.orangePen = new Pen(Color.Orange, 1);
-            this.whiteBrush = new SolidBrush(Color.White.BlueFilter());
-            this.greyBrush = new SolidBrush(Color.FromArgb(120, Color.White.BlueFilter()));
+            this.whiteBrush = new SolidBrush(Color.White.BlueLightFilter());
+            this.greyBrush = new SolidBrush(Color.FromArgb(120, Color.White.BlueLightFilter()));
             this.orangeBrush = new SolidBrush(Color.Orange);
             this.redBrush = new SolidBrush(Color.FromArgb(255, Color.Red));
             this.lFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center };

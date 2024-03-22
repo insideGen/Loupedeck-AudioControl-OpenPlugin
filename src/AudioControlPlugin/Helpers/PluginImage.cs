@@ -60,8 +60,8 @@
             using (Font calibri10Font = new Font("Calibri", 10, FontStyle.Regular))
             using (Font calibri12Font = new Font("Calibri", 12, FontStyle.Regular))
             using (Brush orangeBrush = new SolidBrush(Color.Orange))
-            using (Brush whiteABrush = new SolidBrush(Color.FromArgb(192, Color.White.BlueFilter())))
-            using (Brush whiteBrush = new SolidBrush(Color.White.BlueFilter()))
+            using (Brush whiteABrush = new SolidBrush(Color.FromArgb(192, Color.White.BlueLightFilter())))
+            using (Brush whiteBrush = new SolidBrush(Color.White.BlueLightFilter()))
             using (StringFormat format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
             {
                 graphics.Clear(Color.Black);
@@ -101,7 +101,7 @@
             using (Graphics graphics = Graphics.FromImage(image))
             using (Font calibri10Font = new Font("Calibri", 10, FontStyle.Regular))
             using (Brush orangeBrush = new SolidBrush(Color.Orange))
-            using (Brush whiteABrush = new SolidBrush(Color.FromArgb(192, Color.White.BlueFilter())))
+            using (Brush whiteABrush = new SolidBrush(Color.FromArgb(192, Color.White.BlueLightFilter())))
             using (StringFormat format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
             {
                 graphics.Clear(Color.Black);
@@ -127,7 +127,7 @@
                     graphics.DrawString("Control", calibri10Font, whiteABrush, new RectangleF(2, pluginNameY + 12, 76, 12), format);
                 }
 
-                icon.Recolor(Color.White.BlueFilter());
+                icon.Recolor(Color.White.BlueLightFilter());
                 graphics.DrawImage(icon, (image.Width - icon.Width) / 2, (image.Height - icon.Height) / 2 + iconY, icon.Width, icon.Height);
 
                 return PluginImage.ToBitmapImage(image);
@@ -157,7 +157,7 @@
             using (Bitmap icon = PluginImage.ReadBitmap(iconPath))
             {
                 graphics.Clear(Color.Black);
-                icon.Recolor(Color.White.BlueFilter());
+                icon.Recolor(Color.White.BlueLightFilter());
                 graphics.DrawImage(icon, (image.Width - icon.Width) / 2, (image.Height - icon.Height) / 2, icon.Width, icon.Height);
                 return PluginImage.ToBitmapImage(image);
             }
