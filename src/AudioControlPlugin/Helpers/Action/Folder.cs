@@ -154,21 +154,24 @@
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
         {
             this.ParseActionParameter(actionParameter, out string pageName, out string pageActionParameter);
-            if (pageActionParameter == "@back")
+            if (this.GetPage(pageName) is FolderPage page && page == this.CurrentPage)
             {
-                if (this.PageStack.Count > 1)
+                if (pageActionParameter == "@back")
                 {
-                    pageActionParameter = "Back";
+                    if (this.PageStack.Count > 1)
+                    {
+                        pageActionParameter = "Back";
+                    }
+                    else
+                    {
+                        pageActionParameter = "Exit";
+                    }
+                    return PluginImage.DrawTextImage(pageActionParameter, imageSize);
                 }
                 else
                 {
-                    pageActionParameter = "Exit";
+                    return page.GetCommandImage(pageActionParameter, imageSize);
                 }
-                return PluginImage.DrawTextImage(pageActionParameter, imageSize);
-            }
-            else if (this.GetPage(pageName) is FolderPage page)
-            {
-                return page.GetCommandImage(pageActionParameter, imageSize);
             }
             return PluginImage.DrawBlackImage(imageSize);
         }
@@ -176,7 +179,7 @@
         public override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
         {
             this.ParseActionParameter(actionParameter, out string pageName, out string pageActionParameter);
-            if (this.GetPage(pageName) is FolderPage page)
+            if (this.GetPage(pageName) is FolderPage page && page == this.CurrentPage)
             {
                 return page.GetAdjustmentImage(pageActionParameter, imageSize);
             }
@@ -186,7 +189,7 @@
         public override void ApplyAdjustment(string actionParameter, int diff)
         {
             this.ParseActionParameter(actionParameter, out string pageName, out string pageActionParameter);
-            if (this.GetPage(pageName) is FolderPage page)
+            if (this.GetPage(pageName) is FolderPage page && page == this.CurrentPage)
             {
                 page.ApplyAdjustment(pageActionParameter, diff);
             }
@@ -195,7 +198,7 @@
         public override bool ProcessButtonEvent2(string actionParameter, DeviceButtonEvent2 buttonEvent)
         {
             this.ParseActionParameter(actionParameter, out string pageName, out string pageActionParameter);
-            if (this.GetPage(pageName) is FolderPage page)
+            if (this.GetPage(pageName) is FolderPage page && page == this.CurrentPage)
             {
                 if (buttonEvent.EventType == DeviceButtonEventType.Press)
                 {
@@ -208,7 +211,7 @@
         public override bool ProcessEncoderEvent(string actionParameter, DeviceEncoderEvent encoderEvent)
         {
             this.ParseActionParameter(actionParameter, out string pageName, out string pageActionParameter);
-            if (this.GetPage(pageName) is FolderPage page)
+            if (this.GetPage(pageName) is FolderPage page && page == this.CurrentPage)
             {
                 return page.ProcessEncoderEvent(pageActionParameter, encoderEvent);
             }
@@ -218,13 +221,19 @@
         public override bool ProcessTouchEvent(string actionParameter, DeviceTouchEvent touchEvent)
         {
             this.ParseActionParameter(actionParameter, out string pageName, out string pageActionParameter);
-            if (pageActionParameter == "@back" && touchEvent.EventType == DeviceTouchEventType.Tap)
+            if (this.GetPage(pageName) is FolderPage page && page == this.CurrentPage)
             {
-                this.LeavePage();
-            }
-            else if (this.GetPage(pageName) is FolderPage page)
-            {
-                return page.ProcessTouchEvent(pageActionParameter, touchEvent);
+                if (pageActionParameter == "@back")
+                {
+                    if (touchEvent.EventType == DeviceTouchEventType.Tap)
+                    {
+                        this.LeavePage();
+                    }
+                }
+                else
+                {
+                    return page.ProcessTouchEvent(pageActionParameter, touchEvent);
+                }
             }
             return base.ProcessTouchEvent(actionParameter, touchEvent);
         }

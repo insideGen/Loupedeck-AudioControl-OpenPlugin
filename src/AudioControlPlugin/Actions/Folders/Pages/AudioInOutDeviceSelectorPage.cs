@@ -42,7 +42,7 @@
 
         public override bool ProcessTouchEvent(string actionParameter, DeviceTouchEvent touchEvent)
         {
-            if (touchEvent.EventType == DeviceTouchEventType.Press)
+            if (touchEvent.EventType == DeviceTouchEventType.Tap)
             {
                 if (AudioControl.TryGetAudioControl(actionParameter, out IAudioControl audioControl))
                 {
