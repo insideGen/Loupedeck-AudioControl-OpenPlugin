@@ -8,8 +8,8 @@
     using System.Linq;
     using System.Timers;
 
-    using WindowsCoreAudio;
-    using WindowsCoreAudio.API;
+    using WindowsInterop.CoreAudio;
+    using WindowsInterop.Win32;
 
     internal class AudioControlAction
     {

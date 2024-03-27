@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{426F10F4-889C-4E26-BBDE-45C3A01A6B12}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WindowsInterop</RootNamespace>
+    <AssemblyName>WindowsInterop</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppInfo.cs" />
+    <Compile Include="CoreAudio\AudioCaptureClient.cs" />
+    <Compile Include="CoreAudio\AudioClient.cs" />
+    <Compile Include="CoreAudio\AudioEndpointVolume.cs" />
+    <Compile Include="CoreAudio\AudioEndpointVolumeCallback.cs" />
+    <Compile Include="CoreAudio\AudioEndpointVolumeChannel.cs" />
+    <Compile Include="CoreAudio\AudioEndpointVolumeChannels.cs" />
+    <Compile Include="CoreAudio\AudioEndpointVolumeRange.cs" />
+    <Compile Include="CoreAudio\AudioEndpointVolumeStepInformation.cs" />
+    <Compile Include="CoreAudio\AudioMeterInformation.cs" />
+    <Compile Include="CoreAudio\AudioMeterInformationChannels.cs" />
+    <Compile Include="CoreAudio\AudioMute.cs" />
+    <Compile Include="CoreAudio\AudioPolicyConfig.cs" />
+    <Compile Include="CoreAudio\AudioPolicyConfig1.cs" />
+    <Compile Include="CoreAudio\AudioPolicyConfig2.cs" />
+    <Compile Include="CoreAudio\AudioSessionCollection.cs" />
+    <Compile Include="CoreAudio\AudioSessionControl.cs" />
+    <Compile Include="CoreAudio\AudioSessionEvents.cs" />
+    <Compile Include="CoreAudio\AudioSessionIdentifier.cs" />
+    <Compile Include="CoreAudio\AudioSessionManager.cs" />
+    <Compile Include="CoreAudio\AudioSessionNotification.cs" />
+    <Compile Include="CoreAudio\AudioVolumeLevel.cs" />
+    <Compile Include="CoreAudio\AudioVolumeNotificationEventArgs.cs" />
+    <Compile Include="CoreAudio\Connector.cs" />
+    <Compile Include="CoreAudio\DefaultDeviceEventArgs.cs" />
+    <Compile Include="CoreAudio\DefaultDeviceId.cs" />
+    <Compile Include="CoreAudio\DeviceIdEventArgs.cs" />
+    <Compile Include="CoreAudio\DeviceStateEventArgs.cs" />
+    <Compile Include="CoreAudio\DeviceTopology.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioControl.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioControlDevice.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioControlSession.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioPolicyConfig.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioClientBufferFlags.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioClientShareMode.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioClientStreamFlags.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioSessionDisconnectReason.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioSessionState.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioStreamCategory.cs" />
+    <Compile Include="CoreAudio\Interfaces\AudioVolumeNotificationData.cs" />
+    <Compile Include="ModernApp\Interfaces\AppxFactory.cs" />
+    <Compile Include="ModernApp\Interfaces\IAppxFactory.cs" />
+    <Compile Include="ModernApp\Interfaces\IAppxManifestApplication.cs" />
+    <Compile Include="ModernApp\Interfaces\IAppxManifestApplicationsEnumerator.cs" />
+    <Compile Include="ModernApp\Interfaces\IAppxManifestProperties.cs" />
+    <Compile Include="ModernApp\Interfaces\IAppxManifestReader.cs" />
+    <Compile Include="ModernApp\Interfaces\PackageConstants.cs" />
+    <Compile Include="ModernApp\Interfaces\PackageId.cs" />
+    <Compile Include="ModernApp\Interfaces\PackageInfo.cs" />
+    <Compile Include="PropertySystem\Interfaces\Blob.cs" />
+    <Compile Include="CoreAudio\Interfaces\ClsCtx.cs" />
+    <Compile Include="CoreAudio\Interfaces\ConnectorType.cs" />
+    <Compile Include="CoreAudio\Interfaces\DataFlow.cs" />
+    <Compile Include="CoreAudio\Interfaces\DeviceState.cs" />
+    <Compile Include="CoreAudio\Interfaces\EndpointHardwareSupport.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioCaptureClient.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioClient.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioClient2.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioClock.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioClock2.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioEndpointVolume.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioEndpointVolumeCallback.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioMeterInformation.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioMute.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioPolicyConfig1.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioPolicyConfig2.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioRenderClient.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionControl.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionControl2.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionEnumerator.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionEvents.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionManager.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionManager2.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioSessionNotification.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioStreamVolume.cs" />
+    <Compile Include="CoreAudio\Interfaces\IAudioVolumeLevel.cs" />
+    <Compile Include="CoreAudio\Interfaces\IChannelAudioVolume.cs" />
+    <Compile Include="CoreAudio\Interfaces\IConnector.cs" />
+    <Compile Include="CoreAudio\Interfaces\IControlChangeNotify.cs" />
+    <Compile Include="CoreAudio\Interfaces\IControlInterface.cs" />
+    <Compile Include="CoreAudio\Interfaces\IDeviceTopology.cs" />
+    <Compile Include="CoreAudio\Interfaces\IKsJackDescription.cs" />
+    <Compile Include="CoreAudio\Interfaces\IMMDevice.cs" />
+    <Compile Include="CoreAudio\Interfaces\IMMDeviceCollection.cs" />
+    <Compile Include="CoreAudio\Interfaces\IMMDeviceEnumerator.cs" />
+    <Compile Include="CoreAudio\Interfaces\IMMEndpoint.cs" />
+    <Compile Include="CoreAudio\Interfaces\IMMNotificationClient.cs" />
+    <Compile Include="CoreAudio\Interfaces\IPart.cs" />
+    <Compile Include="CoreAudio\Interfaces\IPartsList.cs" />
+    <Compile Include="CoreAudio\Interfaces\IPerChannelDbLevel.cs" />
+    <Compile Include="CoreAudio\Interfaces\IPolicyConfig.cs" />
+    <Compile Include="PropertySystem\Interfaces\IPropertyStore.cs" />
+    <Compile Include="CoreAudio\Interfaces\ISimpleAudioVolume.cs" />
+    <Compile Include="CoreAudio\Interfaces\ISubunit.cs" />
+    <Compile Include="CoreAudio\Interfaces\PartType.cs" />
+    <Compile Include="PropertySystem\PropertyKey.cs" />
+    <Compile Include="PropertySystem\Interfaces\PropVariant.cs" />
+    <Compile Include="CoreAudio\Interfaces\Role.cs" />
+    <Compile Include="CoreAudio\Interfaces\StorageAccessMode.cs" />
+    <Compile Include="CoreAudio\Interfaces\WaveFormat.cs" />
+    <Compile Include="CoreAudio\Interfaces\WaveFormatExtensible.cs" />
+    <Compile Include="CoreAudio\Interfaces\WaveFormatTags.cs" />
+    <Compile Include="CoreAudio\Interfaces\WaveHeader.cs" />
+    <Compile Include="CoreAudio\Interfaces\WaveHeaderFlags.cs" />
+    <Compile Include="CoreAudio\Interfaces\WaveInterop.cs" />
+    <Compile Include="CoreAudio\KsJackDescription.cs" />
+    <Compile Include="CoreAudio\MMAudio.cs" />
+    <Compile Include="CoreAudio\MMDevice.cs" />
+    <Compile Include="CoreAudio\MMDeviceCollection.cs" />
+    <Compile Include="CoreAudio\MMDeviceEnumerator.cs" />
+    <Compile Include="CoreAudio\MMDevices.cs" />
+    <Compile Include="CoreAudio\MMNotificationClient.cs" />
+    <Compile Include="CoreAudio\Part.cs" />
+    <Compile Include="CoreAudio\PartsList.cs" />
+    <Compile Include="PropertySystem\PropertyKeys.cs" />
+    <Compile Include="PropertySystem\PropertyStore.cs" />
+    <Compile Include="PropertySystem\PropertyStoreKeyValue.cs" />
+    <Compile Include="PropertySystem\PropertyValueEventArgs.cs" />
+    <Compile Include="CoreAudio\SimpleAudioVolume.cs" />
+    <Compile Include="CoreAudio\WaveIn.cs" />
+    <Compile Include="CoreAudio\WaveInBuffer.cs" />
+    <Compile Include="CoreAudio\WaveInCaptureState.cs" />
+    <Compile Include="CoreAudio\WaveInEventArgs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ModernApp\AppxApp.cs" />
+    <Compile Include="ModernApp\AppxPackage.cs" />
+    <Compile Include="ModernApp\AppxPackageArchitecture.cs" />
+    <Compile Include="Win32\Combase.cs" />
+    <Compile Include="Win32\DevicePathMapper.cs" />
+    <Compile Include="Win32\Gdi32.cs" />
+    <Compile Include="HMODULE.cs" />
+    <Compile Include="HRESULT.cs" />
+    <Compile Include="PropertySystem\Interfaces\GetPropertyStore.cs" />
+    <Compile Include="Win32\Interfaces\IShellItem.cs" />
+    <Compile Include="Win32\Interfaces\IShellItem2.cs" />
+    <Compile Include="Win32\Interfaces\IShellItemImageFactory.cs" />
+    <Compile Include="PropertySystem\Interfaces\PropArray.cs" />
+    <Compile Include="Win32\Interfaces\SFGAO.cs" />
+    <Compile Include="Win32\Interfaces\SICHINT.cs" />
+    <Compile Include="Win32\Interfaces\SIGDN.cs" />
+    <Compile Include="Win32\Interfaces\SIIGBF.cs" />
+    <Compile Include="Win32\Interfaces\SIZE.cs" />
+    <Compile Include="Win32\Kernel32.cs" />
+    <Compile Include="Win32\Ntdll.cs" />
+    <Compile Include="Win32\Shell32.cs" />
+    <Compile Include="Win32\Shlwapi.cs" />
+    <Compile Include="Win32\User32.cs" />
+    <Compile Include="Win32\Window.cs" />
+    <Compile Include="Win32\WindowEnumerator.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

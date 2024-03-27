@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Concurrent;
     using System.Drawing;
-    using System.Linq;
-
-    using WindowsCoreAudio.API;
 
     internal class AudioImageFactory : IActionImageFactory<AudioImageData>
     {

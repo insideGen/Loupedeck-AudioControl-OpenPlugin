@@ -4,7 +4,7 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioControlPlugin", "AudioControlPlugin\AudioControlPlugin.csproj", "{ACFFFB6A-A407-4936-989C-7B83FB71BFE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsCoreAudio", "WindowsCoreAudio\WindowsCoreAudio.csproj", "{C1694733-E61F-48A6-B497-BE164CC1909C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsInterop", "WindowsInterop\WindowsInterop.csproj", "{426F10F4-889C-4E26-BBDE-45C3A01A6B12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		{ACFFFB6A-A407-4936-989C-7B83FB71BFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACFFFB6A-A407-4936-989C-7B83FB71BFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACFFFB6A-A407-4936-989C-7B83FB71BFE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1694733-E61F-48A6-B497-BE164CC1909C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1694733-E61F-48A6-B497-BE164CC1909C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1694733-E61F-48A6-B497-BE164CC1909C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1694733-E61F-48A6-B497-BE164CC1909C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426F10F4-889C-4E26-BBDE-45C3A01A6B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426F10F4-889C-4E26-BBDE-45C3A01A6B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426F10F4-889C-4E26-BBDE-45C3A01A6B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426F10F4-889C-4E26-BBDE-45C3A01A6B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

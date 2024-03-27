@@ -6,8 +6,7 @@
     using System.Linq;
     using System.Timers;
 
-    using WindowsCoreAudio;
-    using WindowsCoreAudio.API;
+    using WindowsInterop.CoreAudio;
 
     internal class AudioSessionsPage : FolderPage
     {

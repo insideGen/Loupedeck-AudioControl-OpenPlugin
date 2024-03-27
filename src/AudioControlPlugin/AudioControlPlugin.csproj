@@ -112,6 +112,10 @@
       <Project>{c1694733-e61f-48a6-b497-be164cc1909c}</Project>
       <Name>WindowsCoreAudio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WindowsInterop\WindowsInterop.csproj">
+      <Project>{426F10F4-889C-4E26-BBDE-45C3A01A6B12}</Project>
+      <Name>WindowsInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icons\microphone-muted.png" />

@@ -4,8 +4,9 @@
     using System.Runtime.InteropServices;
     using System.Text;
 
-    using WindowsCoreAudio;
-    using WindowsCoreAudio.API;
+    using WindowsInterop;
+    using WindowsInterop.ModernApp;
+    using WindowsInterop.Win32;
 
     internal static class WindowsHelper
     {
@@ -101,7 +102,7 @@
                         {
                             if (Kernel32.GetPackageId(processPtr, ref bufferSize, packageIdPtr) == HRESULT.S_OK)
                             {
-                                Kernel32.PACKAGE_ID packageId = Marshal.PtrToStructure<Kernel32.PACKAGE_ID>(packageIdPtr);
+                                PackageId packageId = Marshal.PtrToStructure<PackageId>(packageIdPtr);
                                 isPackagedProcess = packageId.Publisher.Length > 0;
                             }
                         }

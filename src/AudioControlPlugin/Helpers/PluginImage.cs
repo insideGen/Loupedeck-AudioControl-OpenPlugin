@@ -4,7 +4,7 @@
     using System.Drawing;
     using System.IO;
 
-    using WindowsCoreAudio.API;
+    using WindowsInterop.Win32;
 
     internal static class PluginImage
     {

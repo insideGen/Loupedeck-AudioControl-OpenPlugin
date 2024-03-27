@@ -2,7 +2,7 @@
 {
     using System;
 
-    using WindowsCoreAudio.API;
+    using WindowsInterop.CoreAudio;
 
     public class AudioImageData : IActionImageData, IEquatable<AudioImageData>
     {

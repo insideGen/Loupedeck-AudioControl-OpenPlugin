@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Drawing;
 
-    using WindowsCoreAudio.API;
+    using WindowsInterop.CoreAudio;
 
     internal class AllInOnePage : FolderPage
     {

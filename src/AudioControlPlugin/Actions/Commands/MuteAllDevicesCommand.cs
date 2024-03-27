@@ -4,8 +4,7 @@
     using System.Drawing;
     using System.Linq;
 
-    using WindowsCoreAudio;
-    using WindowsCoreAudio.API;
+    using WindowsInterop.CoreAudio;
 
     internal class MuteAllDevicesCommand : PluginDynamicCommand
     {
