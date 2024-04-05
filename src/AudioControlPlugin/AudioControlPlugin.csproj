@@ -41,6 +41,7 @@
       <HintPath Condition="$(OS) == 'Windows_NT'">C:\Program Files (x86)\Loupedeck\Loupedeck2\PluginApi.dll</HintPath>
       <HintPath Condition="$(OS) != 'Windows_NT'">/Applications/Loupedeck.app/Contents/MonoBundle/PluginApi.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -90,7 +91,6 @@
     <Compile Include="Helpers\PluginExtension.cs" />
     <Compile Include="Helpers\PluginImage.cs" />
     <Compile Include="Helpers\PluginSettings.cs" />
-    <Compile Include="Helpers\WindowsHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AudioControlApplication.cs" />
     <Compile Include="AudioControlPlugin.cs" />
@@ -106,16 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="metadata\Icon256x256.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WindowsCoreAudio\WindowsCoreAudio.csproj">
-      <Project>{c1694733-e61f-48a6-b497-be164cc1909c}</Project>
-      <Name>WindowsCoreAudio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WindowsInterop\WindowsInterop.csproj">
-      <Project>{426F10F4-889C-4E26-BBDE-45C3A01A6B12}</Project>
-      <Name>WindowsInterop</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icons\microphone-muted.png" />
@@ -152,6 +142,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icons\all-in-one.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsInterop\WindowsInterop.csproj">
+      <Project>{426f10f4-889c-4e26-bbde-45c3a01a6b12}</Project>
+      <Name>WindowsInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

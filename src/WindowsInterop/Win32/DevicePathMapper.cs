@@ -8,14 +8,28 @@
     {
         public static string FromDevicePath(string devicePath)
         {
-            DriveInfo drive = Array.Find(DriveInfo.GetDrives(), d => devicePath.StartsWith(d.GetDevicePath(), StringComparison.InvariantCultureIgnoreCase));
-            return drive != null ? devicePath.ReplaceFirst(drive.GetDevicePath(), drive.GetDriveLetter()) : null;
+            if (string.IsNullOrWhiteSpace(devicePath))
+            {
+                return devicePath;
+            }
+            else
+            {
+                DriveInfo drive = Array.Find(DriveInfo.GetDrives(), d => devicePath.StartsWith(d.GetDevicePath(), StringComparison.InvariantCultureIgnoreCase));
+                return drive != null ? devicePath.ReplaceFirst(drive.GetDevicePath(), drive.GetDriveLetter()) : null;
+            }
         }
 
         public static string FromDriveLetter(string driveLetterPath)
         {
-            DriveInfo drive = Array.Find(DriveInfo.GetDrives(), d => driveLetterPath.StartsWith(d.GetDriveLetter(), StringComparison.InvariantCultureIgnoreCase));
-            return drive != null ? driveLetterPath.ReplaceFirst(drive.GetDriveLetter(), drive.GetDevicePath()) : null;
+            if (string.IsNullOrWhiteSpace(driveLetterPath))
+            {
+                return driveLetterPath;
+            }
+            else
+            {
+                DriveInfo drive = Array.Find(DriveInfo.GetDrives(), d => driveLetterPath.StartsWith(d.GetDriveLetter(), StringComparison.InvariantCultureIgnoreCase));
+                return drive != null ? driveLetterPath.ReplaceFirst(drive.GetDriveLetter(), drive.GetDevicePath()) : null;
+            }
         }
 
         private static string GetDevicePath(this DriveInfo driveInfo)

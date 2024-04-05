@@ -76,45 +76,12 @@
             }
         }
 
-        private Bitmap GetIcon(string iconPath)
-        {
-            Bitmap iconBitmap = null;
-            if (!string.IsNullOrEmpty(iconPath))
-            {
-                // Embedded resource
-                if (iconPath.StartsWith('@'))
-                {
-                    iconPath = iconPath.Substring(1);
-                    string[] values = iconPath.Split(',');
-                    string path = values[0];
-                    string color = values.Length > 1 ? values[1] : null;
-                    iconBitmap = PluginImage.ReadBitmap(path);
-                    if (iconBitmap != null && !string.IsNullOrEmpty(color))
-                    {
-                        iconBitmap = iconBitmap.Recolor(Color.FromName(color));
-                    }
-                }
-                // File resource
-                else
-                {
-                    using (Icon icon = PluginImage.GetIcon(iconPath))
-                    {
-                        if (icon != null)
-                        {
-                            iconBitmap = icon.ToBitmap().BlueLightFilter();
-                        }
-                    }
-                }
-            }
-            return iconBitmap;
-        }
-
         private Bitmap CreateMutedIcon(string iconPath)
         {
             Bitmap icon = null;
             if (!string.IsNullOrEmpty(iconPath))
             {
-                icon = this.GetIcon(iconPath);
+                icon = PluginImage.GetIcon(iconPath);
                 if (icon != null)
                 {
                     using (Graphics graphics = Graphics.FromImage(icon))
@@ -175,7 +142,7 @@
 
             this.graphicsWidth80.Clear(audioData.Highlighted ? Color.FromArgb(45, 45, 45) : Color.Black);
 
-            this.graphicsWidth80.DrawString(audioData.DisplayName, this.calibri10Font, this.whiteBrush, new Rectangle(0, 6, 80, 11), this.cFormat);
+            this.graphicsWidth80.DrawString(audioData.DisplayName, this.calibri10Font, this.whiteBrush, new Rectangle(0, 6, 80, 12), this.cFormat);
 
             if (icon != null)
             {
@@ -188,20 +155,20 @@
                 this.graphicsWidth80.FillRectangle(this.orangeBrush, volume_x, volume_y, volume_width, volume_height);
                 this.graphicsWidth80.FillRectangle(this.redBrush, peakL_x, peakL_y, peakL_width, peakL_height);
                 this.graphicsWidth80.FillRectangle(this.redBrush, peakR_x, peakR_y, peakR_width, peakR_height);
-                this.graphicsWidth80.DrawString(Math.Round(audioData.VolumeScalar * 100.0f, 0).ToString() + " %", this.calibri10Font, this.whiteBrush, new Rectangle(19, 60, 40, 11), this.cFormat);
+                this.graphicsWidth80.DrawString(Math.Round(audioData.VolumeScalar * 100.0f, 0).ToString() + " %", this.calibri10Font, this.whiteBrush, new Rectangle(19, 60, 40, 12), this.cFormat);
             }
             else
             {
-                this.graphicsWidth80.DrawString("Inactive", this.calibri10Font, this.whiteBrush, new Rectangle(14, 60, 50, 11), this.cFormat);
+                this.graphicsWidth80.DrawString("Inactive", this.calibri10Font, this.whiteBrush, new Rectangle(14, 60, 50, 12), this.cFormat);
             }
 
             if (audioData.IsCommunicationsDefault)
             {
-                this.graphicsWidth80.DrawString("C", this.calibri7Font, this.greyBrush, new RectangleF(6, 53, 12, 11), this.cFormat);
+                this.graphicsWidth80.DrawString("C", this.calibri7Font, this.greyBrush, new RectangleF(6, 53, 12, 12), this.cFormat);
             }
             if (audioData.IsMultimediaDefault)
             {
-                this.graphicsWidth80.DrawString("M", this.calibri7Font, this.greyBrush, new RectangleF(6, 62, 12, 11), this.cFormat);
+                this.graphicsWidth80.DrawString("M", this.calibri7Font, this.greyBrush, new RectangleF(6, 62, 12, 12), this.cFormat);
             }
 
             return this.imageWidth80;
@@ -218,12 +185,12 @@
                 }
                 else
                 {
-                    icon = this.iconsDictionary.GetOrAdd($"{audioData.MutedIconPath}+muted", (key) => this.GetIcon(audioData.MutedIconPath));
+                    icon = this.iconsDictionary.GetOrAdd($"{audioData.MutedIconPath}+muted", (key) => PluginImage.GetIcon(audioData.MutedIconPath));
                 }
             }
             else
             {
-                icon = this.iconsDictionary.GetOrAdd($"{audioData.UnmutedIconPath}+unmuted", (key) => this.GetIcon(audioData.UnmutedIconPath));
+                icon = this.iconsDictionary.GetOrAdd($"{audioData.UnmutedIconPath}+unmuted", (key) => PluginImage.GetIcon(audioData.UnmutedIconPath));
             }
             if (imageSize == PluginImageSize.Width60)
             {

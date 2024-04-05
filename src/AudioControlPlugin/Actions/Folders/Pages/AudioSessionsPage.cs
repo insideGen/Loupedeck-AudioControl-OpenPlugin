@@ -12,7 +12,7 @@
     {
         public enum DefaultType
         {
-            Communication,
+            Communications,
             Multimedia
         }
 
@@ -128,7 +128,7 @@
             List<string> actionNames = new List<string>();
             if (this._isDefaultDevices)
             {
-                if (this._defaultType == DefaultType.Communication)
+                if (this._defaultType == DefaultType.Communications)
                 {
                     this._render = AudioControl.MMAudio.DefaultCommunicationsRender;
                     this._capture = AudioControl.MMAudio.DefaultCommunicationsCapture;
@@ -152,11 +152,11 @@
             {
                 if (session.IsSystemSoundsSession)
                 {
-                    actionNames.Insert(0, session.Id);
+                    actionNames.Insert(0, session.InstanceId);
                 }
                 else
                 {
-                    actionNames.Add(session.Id);
+                    actionNames.Add(session.InstanceId);
                 }
             }
             if (this._render != null)

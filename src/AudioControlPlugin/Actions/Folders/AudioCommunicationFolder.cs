@@ -12,7 +12,7 @@
 
         public AudioCommunicationFolder() : base(DISPLAY_NAME, DESCRIPTION, GROUP_NAME)
         {
-            base.HomePage = new AudioSessionsPage(this, AudioSessionsPage.DefaultType.Communication);
+            base.HomePage = new AudioSessionsPage(this, AudioSessionsPage.DefaultType.Communications);
         }
 
         public override BitmapImage GetButtonImage(PluginImageSize imageSize)

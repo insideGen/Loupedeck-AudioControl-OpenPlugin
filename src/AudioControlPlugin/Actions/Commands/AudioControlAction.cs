@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Timers;
 
+    using WindowsInterop;
     using WindowsInterop.CoreAudio;
     using WindowsInterop.Win32;
 
@@ -124,10 +125,10 @@
                         e.AddItem(MULTIMEDIA_NAME, $"* {MULTIMEDIA_DISPLAY_NAME}", "");
                         this.KeyValuePairs.TryAdd(COMMUNICATIONS_NAME, COMMUNICATIONS_DISPLAY_NAME);
                         this.KeyValuePairs.TryAdd(MULTIMEDIA_NAME, MULTIMEDIA_DISPLAY_NAME);
-                        foreach (IAudioControl audioControl in AudioControl.MMAudio.CaptureDevices.Where(x => x.State == DeviceState.Active))
+                        foreach (IAudioControlDevice device in AudioControl.MMAudio.CaptureDevices.Where(x => x.State == DeviceState.Active))
                         {
-                            e.AddItem(audioControl.Id, audioControl.DisplayName, "");
-                            this.KeyValuePairs.TryAdd(audioControl.Id, audioControl.DisplayName);
+                            e.AddItem(device.Id, device.DisplayName, "");
+                            this.KeyValuePairs.TryAdd(device.Id, device.DisplayName);
                         }
                     }
                     else if (deviceType.Equals(EndpointType.Render.ToLower()))
@@ -136,25 +137,24 @@
                         e.AddItem(MULTIMEDIA_NAME, $"* {MULTIMEDIA_DISPLAY_NAME}", "");
                         this.KeyValuePairs.TryAdd(COMMUNICATIONS_NAME, COMMUNICATIONS_DISPLAY_NAME);
                         this.KeyValuePairs.TryAdd(MULTIMEDIA_NAME, MULTIMEDIA_DISPLAY_NAME);
-                        foreach (IAudioControl audioControl in AudioControl.MMAudio.RenderDevices.Where(x => x.State == DeviceState.Active))
+                        foreach (IAudioControlDevice device in AudioControl.MMAudio.RenderDevices.Where(x => x.State == DeviceState.Active))
                         {
-                            e.AddItem(audioControl.Id, audioControl.DisplayName, "");
-                            this.KeyValuePairs.TryAdd(audioControl.Id, audioControl.DisplayName);
+                            e.AddItem(device.Id, device.DisplayName, "");
+                            this.KeyValuePairs.TryAdd(device.Id, device.DisplayName);
                         }
                     }
                     else if (deviceType.Equals(EndpointType.Application.ToLower()))
                     {
                         e.AddItem(FOREGROUND_NAME, $"* {FOREGROUND_DISPLAY_NAME}", "");
                         this.KeyValuePairs.TryAdd(FOREGROUND_NAME, FOREGROUND_DISPLAY_NAME);
-                        foreach (IAudioControl audioControl in AudioControl.MMAudio.RenderSessions)
+                        foreach (IAudioControlSession session in AudioControl.MMAudio.RenderSessions)
                         {
-                            if (!string.IsNullOrEmpty(audioControl.DisplayName))
+                            if (!string.IsNullOrEmpty(session.DisplayName))
                             {
-                                AudioSessionIdentifier audioSessionIdentifier = new AudioSessionIdentifier(audioControl.Id);
-                                if (!string.IsNullOrEmpty(audioSessionIdentifier.ExePath) && !this.KeyValuePairs.Keys.Any(x => x.Contains(audioSessionIdentifier.ExePath)))
+                                if (!this.KeyValuePairs.Keys.Any(x => (AudioSessionInstanceIdentifier.FromString(x) is AudioSessionInstanceIdentifier asii) && ((asii.ExePath == session.ExePath) || (session.ExeId.Equals(Guid.Empty.ToString()) && asii.ExeId == session.ExeId))))
                                 {
-                                    e.AddItem(audioSessionIdentifier.ToString(), audioControl.DisplayName, "");
-                                    this.KeyValuePairs.TryAdd(audioSessionIdentifier.ToString(), audioControl.DisplayName);
+                                    e.AddItem(session.Id, session.DisplayName, "");
+                                    this.KeyValuePairs.TryAdd(session.Id, session.DisplayName);
                                 }
                             }
                         }
@@ -262,19 +262,24 @@
                 {
                     if (endpointId.Equals(FOREGROUND_NAME))
                     {
-                        if (WindowsHelper.TryGetForegroundProcessInfo(out int processId, out string fileName))
+                        if (WindowEnumerator.TryGetForegroundProcessId(out int processId))
                         {
-                            if (!string.IsNullOrEmpty(fileName))
+                            if (AppInfo.FromProcess(processId) is AppInfo appInfo)
                             {
-                                AudioSessionInstanceIdentifier asii = new AudioSessionInstanceIdentifier($"{{0.0.0.00000000}}.{{{Guid.Empty}}}", DevicePathMapper.FromDriveLetter(fileName), $"{{{Guid.Empty}}}", processId);
+                                AudioSessionInstanceIdentifier asii = new AudioSessionInstanceIdentifier($"{{0.0.0.00000000}}.{{{Guid.Empty}}}", appInfo.ExePath, $"{{{Guid.Empty}}}", 1, appInfo.ProcessId);
                                 endpointId = asii.ToString();
-                                return true;
+                            }
+                            else
+                            {
+                                throw new Exception("AppInfo not found.");
                             }
                         }
-                        return false;
+                        else
+                        {
+                            throw new Exception("Foreground process not found.");
+                        }
                     }
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -284,7 +289,6 @@
                 channel = ActionChannel.None;
                 type = EndpointType.Capture;
                 endpointId = null;
-
                 return false;
             }
         }
@@ -329,21 +333,23 @@
                 {
                     if (type == EndpointType.Application)
                     {
-                        AudioSessionInstanceIdentifier asii = new AudioSessionInstanceIdentifier(endpointId);
                         string displayName = string.Empty;
-                        string exePath = DevicePathMapper.FromDevicePath(asii.ExePath);
-                        if (File.Exists(exePath))
+                        string iconPath = string.Empty;
+                        AudioSessionInstanceIdentifier asii = AudioSessionInstanceIdentifier.FromString(endpointId);
+                        if (AppInfo.FromProcess(asii.ProcessId) is AppInfo appInfoFromProcess)
                         {
-                            displayName = FileVersionInfo.GetVersionInfo(exePath).ProductName;
-                            if (string.IsNullOrEmpty(displayName))
-                            {
-                                displayName = Path.GetFileNameWithoutExtension(exePath);
-                            }
+                            displayName = appInfoFromProcess.DisplayName;
+                            iconPath = appInfoFromProcess.LogoPath;
+                        }
+                        else if (AppInfo.FromPath(asii.ExePath) is AppInfo appInfoFromPath)
+                        {
+                            displayName = appInfoFromPath.DisplayName;
+                            iconPath = appInfoFromPath.LogoPath;
                         }
                         audioImageData = new AudioImageData();
                         audioImageData.Id = actionParametersString;
                         audioImageData.DisplayName = displayName;
-                        audioImageData.UnmutedIconPath = exePath;
+                        audioImageData.UnmutedIconPath = iconPath;
                         audioImageData.IsActive = false;
                         audioImageData.Highlighted = highlighted;
                     }
