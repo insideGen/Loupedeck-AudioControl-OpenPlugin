@@ -10,7 +10,7 @@
         /// </summary>
         /// <remarks><a href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-rogetactivationfactory"></a></remarks>
         [DllImport("combase.dll", PreserveSig = false)]
-        public static extern HRESULT RoGetActivationFactory([MarshalAs(UnmanagedType.HString)] string activatableClassId, [In] ref Guid iid, [Out, MarshalAs(UnmanagedType.IInspectable)] out object factory);
+        public static extern HRESULT RoGetActivationFactory(IntPtr activatableClassId, [In] ref Guid iid, [Out] out IntPtr factory);
 
         /// <summary>
         /// Creates a new HSTRING based on the specified source string.

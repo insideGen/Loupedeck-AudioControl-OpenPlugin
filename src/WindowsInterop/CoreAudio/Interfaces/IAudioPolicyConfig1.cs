@@ -4,7 +4,7 @@
     using System.Runtime.InteropServices;
 
     [Guid("2A59116D-6C4F-45E0-A74F-707E3FEF9258")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAudioPolicyConfig1
     {
         int __incomplete__add_CtxVolumeChange();

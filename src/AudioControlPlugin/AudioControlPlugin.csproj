@@ -1,161 +1,100 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ACFFFB6A-A407-4936-989C-7B83FB71BFE8}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
     <RootNamespace>Loupedeck.AudioControlPlugin</RootNamespace>
-    <AssemblyName>AudioControlPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup>
-    <BaseIntermediateOutputPath>$(SolutionDir)..\obj\</BaseIntermediateOutputPath>
-    <BaseOutputPath>$(SolutionDir)..\bin\</BaseOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath Condition="$(OS) == 'Windows_NT'">$(LocalAppData)\Loupedeck\Plugins\AudioControl\win\</OutputPath>
-    <OutputPath Condition="$(OS) != 'Windows_NT'">$(HOME)/.local/share/Loupedeck/Plugins/AudioControl/mac/</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <PluginApiDir Condition="$(OS) == 'Windows_NT'">C:\Program Files\Logi\LogiPluginService\</PluginApiDir>
+    <PluginApiDir Condition="$(OS) != 'Windows_NT'">/Applications/Utilities/LogiPluginService.app/Contents/MonoBundle/</PluginApiDir>
+
+    <PluginDir Condition="$(OS) == 'Windows_NT'">$(LocalAppData)\Logi\LogiPluginService\Plugins\</PluginDir>
+    <PluginDir Condition="$(OS) != 'Windows_NT'">~/Library/Application\ Support/Logi/LogiPluginService/Plugins/</PluginDir>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath Condition="$(OS) == 'Windows_NT'">$(BaseOutputPath)$(Configuration)\win\</OutputPath>
-    <OutputPath Condition="$(OS) != 'Windows_NT'">$(BaseOutputPath)$(Configuration)/mac/</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PluginApi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath Condition="$(OS) == 'Windows_NT'">C:\Program Files (x86)\Loupedeck\Loupedeck2\PluginApi.dll</HintPath>
-      <HintPath Condition="$(OS) != 'Windows_NT'">/Applications/Loupedeck.app/Contents/MonoBundle/PluginApi.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="YamlDotNet, Version=15.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.15.1.1\lib\net47\YamlDotNet.dll</HintPath>
-    </Reference>
+    <None Remove="Icons\all-in-one.png" />
+    <None Remove="Icons\application-thin.png" />
+    <None Remove="Icons\application.png" />
+    <None Remove="Icons\cross-mute.png" />
+    <None Remove="Icons\microphone-muted.png" />
+    <None Remove="Icons\microphone-thin.png" />
+    <None Remove="Icons\microphone-unmuted.png" />
+    <None Remove="Icons\settings-thin.png" />
+    <None Remove="Icons\settings.png" />
+    <None Remove="Icons\speaker-muted.png" />
+    <None Remove="Icons\speaker-thin.png" />
+    <None Remove="Icons\speaker-unmuted-0.png" />
+    <None Remove="Icons\speaker-unmuted-1.png" />
+    <None Remove="Icons\speaker-unmuted-2.png" />
+    <None Remove="Icons\speaker-unmuted-3.png" />
+    <None Remove="metadata\Icon16x16.png" />
+    <None Remove="metadata\Icon256x256.png" />
+    <None Remove="metadata\Icon32x32.png" />
+    <None Remove="metadata\Icon48x48.png" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Actions\Commands\AudioControlAction.cs" />
-    <Compile Include="Actions\Commands\AudioControlMuteCommand.cs" />
-    <Compile Include="Actions\Commands\AudioControlVolumeAdjustment.cs" />
-    <Compile Include="Actions\Base\AudioControl.cs" />
-    <Compile Include="Actions\Commands\MuteAllDevicesCommand.cs" />
-    <Compile Include="Actions\Folders\AllInOneFolder.cs" />
-    <Compile Include="Actions\Folders\AudioCommunicationFolder.cs" />
-    <Compile Include="Actions\Folders\Pages\AllInOnePage.cs" />
-    <Compile Include="Actions\Folders\AudioMultimediaFolder.cs" />
-    <Compile Include="Actions\Folders\AudioRenderSessionsFolder.cs" />
-    <Compile Include="Actions\Folders\Pages\AudioDevicesPage.cs" />
-    <Compile Include="Actions\Folders\Pages\AudioInOutDeviceSelectorPage.cs" />
-    <Compile Include="Actions\Folders\Pages\AudioInOutSessionPage.cs" />
-    <Compile Include="Actions\Folders\Pages\AudioSessionsPage.cs" />
-    <Compile Include="Actions\Folders\SettingsFolder.cs" />
-    <Compile Include="Actions\Folders\Pages\SettingsPage.cs" />
-    <Compile Include="Helpers\Action\IActionEditorAction.cs" />
-    <Compile Include="Helpers\Action\IPluginDynamicFolder.cs" />
-    <Compile Include="Helpers\Image\ActionImageStore.cs" />
-    <Compile Include="Actions\Base\AudioImageFactory.cs" />
-    <Compile Include="Helpers\Image\IActionImageData.cs" />
-    <Compile Include="Helpers\Image\IActionImageFactory.cs" />
-    <Compile Include="Helpers\Action\FolderPage.cs" />
-    <Compile Include="Helpers\Action\Folder.cs" />
-    <Compile Include="Actions\Base\CaptureDevice.cs" />
-    <Compile Include="Actions\Folders\AudioCaptureDevicesFolder.cs" />
-    <Compile Include="Actions\Base\RenderDevice.cs" />
-    <Compile Include="Actions\Folders\AudioRenderDevicesFolder.cs" />
-    <Compile Include="Actions\Base\AudioImageData.cs" />
-    <Compile Include="Helpers\PluginData.cs" />
-    <Compile Include="Helpers\PluginExtension.cs" />
-    <Compile Include="Helpers\PluginImage.cs" />
-    <Compile Include="Helpers\PluginSettings.cs" />
-    <Compile Include="Helpers\WindowsHelper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AudioControlApplication.cs" />
-    <Compile Include="AudioControlPlugin.cs" />
-    <Compile Include="Helpers\PluginLog.cs" />
-    <Compile Include="Helpers\PluginResources.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="metadata\LoupedeckPackage.yaml" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="metadata\Icon256x256.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WindowsCoreAudio\WindowsCoreAudio.csproj">
-      <Project>{c1694733-e61f-48a6-b497-be164cc1909c}</Project>
-      <Name>WindowsCoreAudio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WindowsInterop\WindowsInterop.csproj">
-      <Project>{426F10F4-889C-4E26-BBDE-45C3A01A6B12}</Project>
-      <Name>WindowsInterop</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Icons\all-in-one.png" />
+    <EmbeddedResource Include="Icons\application-thin.png" />
+    <EmbeddedResource Include="Icons\application.png" />
+    <EmbeddedResource Include="Icons\cross-mute.png" />
     <EmbeddedResource Include="Icons\microphone-muted.png" />
+    <EmbeddedResource Include="Icons\microphone-thin.png" />
     <EmbeddedResource Include="Icons\microphone-unmuted.png" />
+    <EmbeddedResource Include="Icons\settings-thin.png" />
+    <EmbeddedResource Include="Icons\settings.png" />
     <EmbeddedResource Include="Icons\speaker-muted.png" />
+    <EmbeddedResource Include="Icons\speaker-thin.png" />
     <EmbeddedResource Include="Icons\speaker-unmuted-0.png" />
     <EmbeddedResource Include="Icons\speaker-unmuted-1.png" />
     <EmbeddedResource Include="Icons\speaker-unmuted-2.png" />
     <EmbeddedResource Include="Icons\speaker-unmuted-3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Icons\cross-mute.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="metadata\Icon16x16.png" />
+    <EmbeddedResource Include="metadata\Icon256x256.png" />
     <EmbeddedResource Include="metadata\Icon32x32.png" />
     <EmbeddedResource Include="metadata\Icon48x48.png" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Icons\speaker-thin.png" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Icons\microphone-thin.png" />
+    <ProjectReference Include="..\WindowsInterop\WindowsInterop.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Icons\settings-thin.png" />
+    <Reference Include="PluginApi">
+      <HintPath>$(PluginApiDir)PluginApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Icons\application-thin.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Icons\application.png" />
-    <EmbeddedResource Include="Icons\settings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Icons\all-in-one.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent Condition="$(OS) == 'Windows_NT'">call "$(ProjectDir)BuildEvents\postbuild.cmd" "$(ProjectDir)" "$(TargetDir)"</PostBuildEvent>
-    <PostBuildEvent Condition="$(OS) != 'Windows_NT'">sh "$(ProjectDir)BuildEvents\postbuild" "$(ProjectDir)" "$(TargetDir)"</PostBuildEvent>
-  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Condition="$(OS) == 'Windows_NT'" Command="echo $(TargetDir) &gt; &quot;$(PluginDir)$(ProjectName).link&quot;" />
+    <Exec Condition="$(OS) != 'Windows_NT'" Command="echo $(TargetDir) &gt; $(PluginDir)$(ProjectName).link" />
+  </Target>
+
+  <Target Name="CopyMetadata" AfterTargets="PostBuildEvent">
+    <ItemGroup>
+      <MetadataFiles Include="metadata\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutputPath)metadata" />
+  </Target>
+
+  <Target Name="PluginClean" AfterTargets="CoreClean">
+    <Delete Condition="$(OS) == 'Windows_NT'" Files="$(PluginDir)$(ProjectName).link" />
+    <Exec Condition="$(OS) != 'Windows_NT'" Command="rm -f $(PluginDir)$(ProjectName).link" />
+
+    <RemoveDir Directories="$(OutputPath)metadata" />
+  </Target>
+
 </Project>

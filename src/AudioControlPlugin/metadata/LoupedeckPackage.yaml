@@ -30,7 +30,7 @@ copyright: Copyright © 2024 . All rights reserved.
 
 # Location of plugin files on Windows (relative to the plugin base directory).
 # This parameter is required to support Windows.
-pluginFolderWin: win
+pluginFolderWin: .
 
 # Location of plugin files on macOS (relative to the plugin base directory).
 # This parameter is required to support Mac.
