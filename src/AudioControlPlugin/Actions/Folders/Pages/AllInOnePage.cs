@@ -11,6 +11,8 @@
         public const string MICROPHONE_RESOURCE_PATH = "microphone-unmuted.png";
         public const string SPEAKER_RESOURCE_PATH = "speaker-unmuted-2.png";
         public const string APPLICATION_RESOURCE_PATH = "application.png";
+        public const string MULTIMEDIA_RESOURCE_PATH = "all-in-one.png";
+        public const string COMMUNICATIONS_RESOURCE_PATH = "all-in-one.png";
         public const string SETTINGS_RESOURCE_PATH = "settings.png";
 
         public AllInOnePage(Folder parent) : base(parent)
@@ -19,7 +21,7 @@
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
-            return new string[] { "Capture", "Render", "Session", "Settings" };
+            return new string[] { "Capture", "Render", "Session", "Multimedia", "Communications", "Settings" };
         }
 
         public override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)
@@ -40,6 +42,16 @@
             {
                 categoryName = "Application";
                 iconPath = APPLICATION_RESOURCE_PATH;
+            }
+            else if (actionParameter == "Multimedia")
+            {
+                categoryName = "Media";
+                iconPath = MULTIMEDIA_RESOURCE_PATH;
+            }
+            else if (actionParameter == "Communications")
+            {
+                categoryName = "Comm.";
+                iconPath = COMMUNICATIONS_RESOURCE_PATH;
             }
             else if (actionParameter == "Settings")
             {
@@ -89,6 +101,14 @@
                 else if (actionParameter == "Session")
                 {
                     this.NavigateTo(new AudioSessionsPage(this.Folder));
+                }
+                else if (actionParameter == "Multimedia")
+                {
+                    this.NavigateTo(new AudioSessionsPage(this.Folder, AudioSessionsPage.DefaultType.Multimedia));
+                }
+                else if (actionParameter == "Communications")
+                {
+                    this.NavigateTo(new AudioSessionsPage(this.Folder, AudioSessionsPage.DefaultType.Communications));
                 }
                 else if (actionParameter == "Settings")
                 {

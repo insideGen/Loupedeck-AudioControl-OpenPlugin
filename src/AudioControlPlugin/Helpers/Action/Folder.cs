@@ -122,13 +122,16 @@
 
         public override IEnumerable<string> GetButtonPressActionNames(DeviceType deviceType)
         {
-            this.ButtonActionNames.Clear();
-            if (this.CurrentPage != null)
+            lock (this.ButtonActionNames)
             {
-                this.ButtonActionNames.Add($"{this.CurrentPage.Name}+@back");
-                this.ButtonActionNames.AddRange(this.CurrentPage.GetButtonPressActionNames(deviceType).Select(s => $"{this.CurrentPage.Name}+{s}"));
+                this.ButtonActionNames.Clear();
+                if (this.CurrentPage != null)
+                {
+                    this.ButtonActionNames.Add($"{this.CurrentPage.Name}+@back");
+                    this.ButtonActionNames.AddRange(this.CurrentPage.GetButtonPressActionNames(deviceType).Select(s => $"{this.CurrentPage.Name}+{s}"));
+                }
+                return this.ButtonActionNames.Select(s => base.CreateCommandName(s));
             }
-            return this.ButtonActionNames.Select(s => base.CreateCommandName(s));
         }
 
         public override IEnumerable<string> GetEncoderRotateActionNames(DeviceType deviceType)
