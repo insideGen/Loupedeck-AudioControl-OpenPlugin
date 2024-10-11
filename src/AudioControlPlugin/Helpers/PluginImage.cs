@@ -211,7 +211,7 @@
                 int iconSize = 32;
                 string[] values = iconPath.Split(',');
                 string path = values[0];
-                if (path.StartsWith("@"))
+                if (path.StartsWith('@'))
                 {
                     path = path.Substring(1);
                     string color = values.Length > 1 ? values[1] : null;
@@ -256,63 +256,63 @@
                     User32.DestroyIcon(large);
                     User32.DestroyIcon(small);
                 }
-                else
-                {
-                    System.Windows.Media.Imaging.BitmapSource imageSource = null;
-                    string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-                    string windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-                    if (Path.GetDirectoryName(path).StartsWith(systemPath, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        path = Path.Combine(windowsPath, "sysnative", path.Substring(systemPath.Length + 1));
-                    }
-                    // Microsoft includes garbage CortanaUI app assets (\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\Cortana.UI\Assets\App)
-                    // so replace the appid with one that has better (than nothing) assets.
-                    // Ref: https://github.com/File-New-Project/EarTrumpet/issues/1259
-                    if (path.Equals("MicrosoftWindows.Client.CBS_cw5n1h2txyewy!CortanaUI", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        path = "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!PackageMetadata";
-                    }
+                //else
+                //{
+                //    System.Windows.Media.Imaging.BitmapSource imageSource = null;
+                //    string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+                //    string windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                //    if (Path.GetDirectoryName(path).StartsWith(systemPath, StringComparison.InvariantCultureIgnoreCase))
+                //    {
+                //        path = Path.Combine(windowsPath, "sysnative", path.Substring(systemPath.Length + 1));
+                //    }
+                //    // Microsoft includes garbage CortanaUI app assets (\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\Cortana.UI\Assets\App)
+                //    // so replace the appid with one that has better (than nothing) assets.
+                //    // Ref: https://github.com/File-New-Project/EarTrumpet/issues/1259
+                //    if (path.Equals("MicrosoftWindows.Client.CBS_cw5n1h2txyewy!CortanaUI", StringComparison.InvariantCultureIgnoreCase))
+                //    {
+                //        path = "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!PackageMetadata";
+                //    }
 
-                    IShellItem2 shellItem;
-                    try
-                    {
-                        Guid appsFolder = Guid.Parse("{1E87508D-89C2-42F0-8A7E-645A0F50CA58}");
-                        shellItem = Shell32.SHCreateItemInKnownFolder(appsFolder, Shell32.KF_FLAG_DONT_VERIFY, path, typeof(IShellItem2).GUID);
-                    }
-                    catch (Exception)
-                    {
-                        shellItem = Shell32.SHCreateItemFromParsingName(path, IntPtr.Zero, typeof(IShellItem2).GUID);
-                    }
+                //    IShellItem2 shellItem;
+                //    try
+                //    {
+                //        Guid appsFolder = Guid.Parse("{1E87508D-89C2-42F0-8A7E-645A0F50CA58}");
+                //        shellItem = Shell32.SHCreateItemInKnownFolder(appsFolder, Shell32.KF_FLAG_DONT_VERIFY, path, typeof(IShellItem2).GUID);
+                //    }
+                //    catch (Exception)
+                //    {
+                //        shellItem = Shell32.SHCreateItemFromParsingName(path, IntPtr.Zero, typeof(IShellItem2).GUID);
+                //    }
                     
-                    ((IShellItemImageFactory)shellItem).GetImage(new SIZE { cx = iconSize, cy = iconSize }, SIIGBF.SIIGBF_RESIZETOFIT, out var bmp);
-                    try
-                    {
-                        imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp, IntPtr.Zero, System.Windows.Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-                    }
-                    finally
-                    {
-                        Gdi32.DeleteObject(bmp);
-                    }
+                //    ((IShellItemImageFactory)shellItem).GetImage(new SIZE { cx = iconSize, cy = iconSize }, SIIGBF.SIIGBF_RESIZETOFIT, out nint bmp);
+                //    try
+                //    {
+                //        imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp, IntPtr.Zero, System.Windows.Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                //    }
+                //    finally
+                //    {
+                //        Gdi32.DeleteObject(bmp);
+                //    }
 
-                    IntPtr ptr = IntPtr.Zero;
-                    try
-                    {
-                        int stride = imageSource.PixelWidth * ((imageSource.Format.BitsPerPixel + 7) / 8);
-                        ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(imageSource.PixelHeight * stride);
-                        imageSource.CopyPixels(new System.Windows.Int32Rect(0, 0, imageSource.PixelWidth, imageSource.PixelHeight), ptr, imageSource.PixelHeight * stride, stride);
-                        using (Bitmap bm = new Bitmap(imageSource.PixelWidth, imageSource.PixelHeight, stride, System.Drawing.Imaging.PixelFormat.Format32bppPArgb, ptr))
-                        {
-                            iconBitmap = new Bitmap(bm).BlueLightFilter();
-                        }
-                    }
-                    finally
-                    {
-                        if (ptr != IntPtr.Zero)
-                        {
-                            System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
-                        }
-                    }
-                }
+                //    IntPtr ptr = IntPtr.Zero;
+                //    try
+                //    {
+                //        int stride = imageSource.PixelWidth * ((imageSource.Format.BitsPerPixel + 7) / 8);
+                //        ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(imageSource.PixelHeight * stride);
+                //        imageSource.CopyPixels(new System.Windows.Int32Rect(0, 0, imageSource.PixelWidth, imageSource.PixelHeight), ptr, imageSource.PixelHeight * stride, stride);
+                //        using (Bitmap bm = new Bitmap(imageSource.PixelWidth, imageSource.PixelHeight, stride, System.Drawing.Imaging.PixelFormat.Format32bppPArgb, ptr))
+                //        {
+                //            iconBitmap = new Bitmap(bm).BlueLightFilter();
+                //        }
+                //    }
+                //    finally
+                //    {
+                //        if (ptr != IntPtr.Zero)
+                //        {
+                //            System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
+                //        }
+                //    }
+                //}
             }
             return iconBitmap;
         }

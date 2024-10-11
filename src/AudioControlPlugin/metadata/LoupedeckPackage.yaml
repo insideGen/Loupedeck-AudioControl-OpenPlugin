@@ -5,17 +5,20 @@
 # Package type. Must be plugin4 for plugins.
 type: plugin4
 
-# Name of the plugin.
+# Name that identifies the plugin.
 name: AudioControl
 
-# Name that is displayed in the Loupedeck configuration application.
-displayName: Audio Control
+# Plugin name that is shown to the user.
+displayName: AudioControl
+
+# Short description of the plugin.
+description: Control Windows audio from your Loupedeck.
 
 # Name of the plugin library file.
 pluginFileName: AudioControlPlugin.dll
 
 # Plugin version.
-version: 1.1.0
+version: 2.0.0
 
 # Author of the plugin. The author can be a company or an individual developer.
 author: insideGen
@@ -30,15 +33,16 @@ copyright: Copyright © 2024 . All rights reserved.
 
 # Location of plugin files on Windows (relative to the plugin base directory).
 # This parameter is required to support Windows.
-pluginFolderWin: win
+pluginFolderWin: .
 
 # Location of plugin files on macOS (relative to the plugin base directory).
 # This parameter is required to support Mac.
-#pluginFolderMac: mac
+#pluginFolderMac: .
 
-# List of supported devices.
+# List of devices the plugin is optimized for.
 supportedDevices:
-    # LoupedeckCtFamily covers the following devices: Loupedeck CT, Live and Live S, and Razer Stream Controller.
+    # LoupedeckCtFamily covers the following devices: Loupedeck CT, Live and Live S,
+    # Razer Stream Controller, and Razer Stream Controller X.
     - LoupedeckCtFamily
 
     # LoupedeckPlusFamily covers Loupedeck+ device. Uncomment the following line to support Loupedeck+.
@@ -53,7 +57,7 @@ pluginCapabilities:
     #- ActivatesApplication
 
 # Minimum Loupedeck version supported by the plugin.
-minimumLoupedeckVersion: 5.7
+minimumLoupedeckVersion: 6.0
 
 
 # ==================================================================================================
