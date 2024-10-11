@@ -12,16 +12,19 @@
         {
             get
             {
-                List<string> actionNames = new List<string>();
-                foreach (string actionName in this.Folder.ButtonActionNames)
+                lock (this.Folder.ButtonActionNames)
                 {
-                    this.Folder.ParseActionParameter(actionName, out string pageName, out string actionParam);
-                    if (pageName == this.Name && !actionParam.StartsWith('@'))
+                    List<string> actionNames = new List<string>();
+                    foreach (string actionName in this.Folder.ButtonActionNames)
                     {
-                        actionNames.Add(actionParam);
+                        this.Folder.ParseActionParameter(actionName, out string pageName, out string actionParam);
+                        if (pageName == this.Name && !actionParam.StartsWith('@'))
+                        {
+                            actionNames.Add(actionParam);
+                        }
                     }
+                    return actionNames;
                 }
-                return actionNames;
             }
         }
 

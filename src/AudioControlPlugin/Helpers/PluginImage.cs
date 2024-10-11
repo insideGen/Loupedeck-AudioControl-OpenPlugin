@@ -3,7 +3,9 @@
     using System;
     using System.Drawing;
     using System.IO;
+    using System.Text;
 
+    using WindowsInterop;
     using WindowsInterop.Win32;
 
     internal static class PluginImage
@@ -201,40 +203,118 @@
             }
         }
 
-        public static Icon GetIcon(string iconPath)
+        public static Bitmap GetIcon(string iconPath)
         {
-            Icon icon = null;
-            if (!string.IsNullOrEmpty(iconPath))
+            Bitmap iconBitmap = null;
+            if (!string.IsNullOrWhiteSpace(iconPath))
             {
+                int iconSize = 32;
                 string[] values = iconPath.Split(',');
                 string path = values[0];
-                if (path.EndsWithNoCase(".dll"))
+                if (path.StartsWith('@'))
                 {
-                    try
+                    path = path.Substring(1);
+                    string color = values.Length > 1 ? values[1] : null;
+                    iconBitmap = PluginImage.ReadBitmap(path);
+                    if (iconBitmap != null && !string.IsNullOrEmpty(color))
                     {
-                        int index = values.Length > 1 && int.TryParse(values[1], out index) ? index : 0;
-                        Shell32.ExtractIconEx(path, index, out IntPtr large, out IntPtr small, 1);
-                        User32.DestroyIcon(small);
-                        icon = Icon.FromHandle(large);
-                    }
-                    catch
-                    {
-                        icon = null;
+                        iconBitmap = iconBitmap.Recolor(Color.FromName(color));
                     }
                 }
-                else if (path.EndsWithNoCase(".exe"))
+                //else if (path.EndsWithNoCase(".dll"))
+                //{
+                //    StringBuilder iconPathSB = new StringBuilder(iconPath);
+                //    int iconIndex = Shlwapi.PathParseIconLocation(iconPathSB);
+                //    if (iconIndex != 0)
+                //    {
+                //        using (HMODULE hModule = Kernel32.LoadLibraryEx(iconPathSB.ToString(), IntPtr.Zero, Kernel32.LoadLibraryFlags.LOAD_LIBRARY_AS_DATAFILE | Kernel32.LoadLibraryFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
+                //        {
+                //            IntPtr groupResInfo = Kernel32.FindResource(hModule, new IntPtr(Math.Abs(iconIndex)), Kernel32.RT_GROUP_ICON);
+                //            IntPtr groupResData = Kernel32.LockResource(Kernel32.LoadResource(hModule, groupResInfo));
+                //            int iconId = User32.LookupIconIdFromDirectoryEx(groupResData, true, iconSize, iconSize, User32.LoadImageFlags.LR_DEFAULTCOLOR);
+
+                //            IntPtr iconResInfo = Kernel32.FindResource(hModule, new IntPtr(iconId), Kernel32.RT_ICON);
+                //            IntPtr iconResData = Kernel32.LockResource(Kernel32.LoadResource(hModule, iconResInfo));
+                //            int iconResSize = Kernel32.SizeofResource(hModule, iconResInfo);
+                //            IntPtr iconHandle = User32.CreateIconFromResourceEx(iconResData, iconResSize, true, User32.IconCursorVersion.Default, iconSize, iconSize, User32.LoadImageFlags.LR_DEFAULTCOLOR);
+
+                //            using (Icon icon = Icon.FromHandle(iconHandle))
+                //            {
+                //                icon.GetType().GetField("ownHandle", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(icon, true);
+                //                iconBitmap = icon.ToBitmap().BlueLightFilter();
+                //            }
+
+                //            User32.DestroyIcon(iconHandle);
+                //        }
+                //    }
+                //}
+                else if (path.EndsWithNoCase(".dll") || path.EndsWithNoCase(".exe"))
                 {
-                    try
-                    {
-                        icon = Icon.ExtractAssociatedIcon(iconPath);
-                    }
-                    catch
-                    {
-                        icon = null;
-                    }
+                    int index = values.Length > 1 && int.TryParse(values[1], out index) ? index : 0;
+                    Shell32.ExtractIconEx(path, index, out IntPtr large, out IntPtr small, 1);
+                    iconBitmap = Icon.FromHandle(large).ToBitmap().BlueLightFilter();
+                    User32.DestroyIcon(large);
+                    User32.DestroyIcon(small);
                 }
+                //else
+                //{
+                //    System.Windows.Media.Imaging.BitmapSource imageSource = null;
+                //    string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+                //    string windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                //    if (Path.GetDirectoryName(path).StartsWith(systemPath, StringComparison.InvariantCultureIgnoreCase))
+                //    {
+                //        path = Path.Combine(windowsPath, "sysnative", path.Substring(systemPath.Length + 1));
+                //    }
+                //    // Microsoft includes garbage CortanaUI app assets (\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\Cortana.UI\Assets\App)
+                //    // so replace the appid with one that has better (than nothing) assets.
+                //    // Ref: https://github.com/File-New-Project/EarTrumpet/issues/1259
+                //    if (path.Equals("MicrosoftWindows.Client.CBS_cw5n1h2txyewy!CortanaUI", StringComparison.InvariantCultureIgnoreCase))
+                //    {
+                //        path = "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!PackageMetadata";
+                //    }
+
+                //    IShellItem2 shellItem;
+                //    try
+                //    {
+                //        Guid appsFolder = Guid.Parse("{1E87508D-89C2-42F0-8A7E-645A0F50CA58}");
+                //        shellItem = Shell32.SHCreateItemInKnownFolder(appsFolder, Shell32.KF_FLAG_DONT_VERIFY, path, typeof(IShellItem2).GUID);
+                //    }
+                //    catch (Exception)
+                //    {
+                //        shellItem = Shell32.SHCreateItemFromParsingName(path, IntPtr.Zero, typeof(IShellItem2).GUID);
+                //    }
+                    
+                //    ((IShellItemImageFactory)shellItem).GetImage(new SIZE { cx = iconSize, cy = iconSize }, SIIGBF.SIIGBF_RESIZETOFIT, out nint bmp);
+                //    try
+                //    {
+                //        imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp, IntPtr.Zero, System.Windows.Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                //    }
+                //    finally
+                //    {
+                //        Gdi32.DeleteObject(bmp);
+                //    }
+
+                //    IntPtr ptr = IntPtr.Zero;
+                //    try
+                //    {
+                //        int stride = imageSource.PixelWidth * ((imageSource.Format.BitsPerPixel + 7) / 8);
+                //        ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(imageSource.PixelHeight * stride);
+                //        imageSource.CopyPixels(new System.Windows.Int32Rect(0, 0, imageSource.PixelWidth, imageSource.PixelHeight), ptr, imageSource.PixelHeight * stride, stride);
+                //        using (Bitmap bm = new Bitmap(imageSource.PixelWidth, imageSource.PixelHeight, stride, System.Drawing.Imaging.PixelFormat.Format32bppPArgb, ptr))
+                //        {
+                //            iconBitmap = new Bitmap(bm).BlueLightFilter();
+                //        }
+                //    }
+                //    finally
+                //    {
+                //        if (ptr != IntPtr.Zero)
+                //        {
+                //            System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
+                //        }
+                //    }
+                //}
             }
-            return icon;
+            return iconBitmap;
         }
     }
 }

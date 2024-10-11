@@ -31,8 +31,7 @@
             if (AudioControl.TryGetAudioControl(actionParameter, out IAudioControl audioControl))
             {
                 PluginImage.GetImageSize(imageSize, out int width, out int height);
-                using (Icon icon = PluginImage.GetIcon(audioControl.IconPath))
-                using (Bitmap iconBmp = icon?.ToBitmap())
+                using (Bitmap iconBmp = PluginImage.GetIcon(audioControl.IconPath))
                 using (Bitmap image = new Bitmap(width, height))
                 using (Graphics graphics = Graphics.FromImage(image))
                 using (Font valueFont = new Font("Calibri", 11, FontStyle.Bold))
@@ -46,11 +45,11 @@
                     int margin2 = 0;
                     int iconHeight = 32;
 
-                    if (icon != null && iconBmp != null)
+                    if (iconBmp != null)
                     {
                         iconBmp.BlueLightFilter();
-                        graphics.DrawImage(iconBmp, (image.Width - icon.Width) / 2, margin1, icon.Width, icon.Height);
-                        iconHeight = icon.Height;
+                        graphics.DrawImage(iconBmp, (image.Width - iconBmp.Width) / 2, margin1, iconBmp.Width, iconBmp.Height);
+                        iconHeight = iconBmp.Height;
                     }
 
                     RectangleF valueRectangle = new RectangleF(0, margin1 + iconHeight + margin2, image.Width, image.Height - (margin1 + iconHeight + margin2));

@@ -1,11 +1,8 @@
 ﻿namespace WindowsInterop.CoreAudio
 {
     using System;
-    using System.Diagnostics;
-    using System.IO;
     using System.Runtime.InteropServices;
     using System.Text;
-    using WindowsInterop.Win32;
 
     public class AudioSessionControl : IAudioControlSession, IDisposable
     {
@@ -22,6 +19,7 @@
 
         private string _displayName = null;
         private string _iconPath = null;
+        private string _exePath = null;
 
         public AudioMeterInformation AudioMeterInformation { get; private set; }
 
@@ -29,15 +27,13 @@
 
         public int ProcessId { get; private set; }
 
-        public string ExePath { get; private set; }
-
         public string SessionIdentifier { get; private set; }
 
-        public AudioSessionIdentifier AudioSessionIdentifier { get; private set; }
+        public AudioSessionIdentifier ASI { get; private set; }
 
         public string SessionInstanceIdentifier { get; private set; }
 
-        public AudioSessionInstanceIdentifier AudioSessionInstanceIdentifier { get; private set; }
+        public AudioSessionInstanceIdentifier ASII { get; private set; }
 
         public bool IsSystemSoundsSession { get; private set; }
 
@@ -92,33 +88,21 @@
             Marshal.ThrowExceptionForHR(this.audioSessionControlInterface.RegisterAudioSessionNotification(this.audioSessionEvents));
         }
 
-        private int GetProcessId()
+        public void LoadProperties()
         {
             Marshal.ThrowExceptionForHR(this.audioSessionControlInterface.GetProcessId(out int pid));
             this.ProcessId = pid;
-            return pid;
-        }
-        
-        private AudioSessionState GetState()
-        {
+
             Marshal.ThrowExceptionForHR(this.audioSessionControlInterface.GetState(out AudioSessionState state));
             this.State = state;
-            return state;
-        }
-
-        public void LoadProperties()
-        {
-            this.GetProcessId();
-
-            this.GetState();
 
             Marshal.ThrowExceptionForHR(this.audioSessionControlInterface.GetSessionIdentifier(out string sessionId));
             this.SessionIdentifier = sessionId;
-            this.AudioSessionIdentifier = new AudioSessionIdentifier(this.SessionIdentifier);
+            this.ASI = AudioSessionIdentifier.FromString(this.SessionIdentifier);
 
             Marshal.ThrowExceptionForHR(this.audioSessionControlInterface.GetSessionInstanceIdentifier(out string sessionInstanceId));
             this.SessionInstanceIdentifier = sessionInstanceId;
-            this.AudioSessionInstanceIdentifier = new AudioSessionInstanceIdentifier(this.SessionInstanceIdentifier);
+            this.ASII = AudioSessionInstanceIdentifier.FromString(this.SessionInstanceIdentifier);
 
             Marshal.ThrowExceptionForHR(this.audioSessionControlInterface.GetDisplayName(out string displayName));
             if (!string.IsNullOrEmpty(displayName) && displayName.StartsWith("@"))
@@ -142,20 +126,16 @@
 
             this.IsSystemSoundsSession = this.audioSessionControlInterface.IsSystemSoundsSession() == HRESULT.S_OK;
 
-            if (!this.IsSystemSoundsSession)
+            if (this.IsSystemSoundsSession)
             {
-                if (!string.IsNullOrEmpty(this.AudioSessionIdentifier.ExePath))
-                {
-                    this.ExePath = DevicePathMapper.FromDevicePath(this.AudioSessionIdentifier.ExePath);
-                    if (File.Exists(this.ExePath))
-                    {
-                        this._displayName = FileVersionInfo.GetVersionInfo(this.ExePath).ProductName;
-                        if (string.IsNullOrEmpty(this._displayName))
-                        {
-                            this._displayName = Path.GetFileNameWithoutExtension(this.ExePath);
-                        }
-                    }
-                }
+                this.ProcessId = 0;
+                this._exePath = this.ASII.ExePath;
+            }
+            else if (AppInfo.FromProcess(this.ProcessId) is AppInfo appInfo)
+            {
+                this._displayName = appInfo.DisplayName;
+                this._iconPath = appInfo.LogoPath;
+                this._exePath = appInfo.ExePath;
             }
         }
 
@@ -177,14 +157,6 @@
 
         private void OnIconPathChanged(object sender, (string iconPath, Guid eventContext) e)
         {
-            if (e.iconPath.StartsWith("@"))
-            {
-                this._iconPath = Environment.ExpandEnvironmentVariables(e.iconPath.TrimStart('@'));
-            }
-            else
-            {
-                this._iconPath = e.iconPath;
-            }
             this.IconPathChanged?.Invoke(this, e);
         }
 
@@ -214,10 +186,14 @@
             this.SessionDisconnected?.Invoke(this, disconnectReason);
         }
 
-        string IAudioControl.Id { get => this.SessionInstanceIdentifier; }
+        string IAudioControl.Id { get => this.SessionIdentifier; }
         bool IAudioControl.Muted { get => this.SimpleAudioVolume.Mute; set => this.SimpleAudioVolume.Mute = value; }
         float IAudioControl.VolumeScalar { get => this.SimpleAudioVolume.Volume; set => this.SimpleAudioVolume.Volume = value; }
         float[] IAudioControl.PeakValues { get => this.AudioMeterInformation.PeakValues.ToArray(); }
+        string IAudioControlSession.InstanceId { get => this.SessionInstanceIdentifier; }
+        string IAudioControlSession.DeviceId { get => this.ASI.DeviceId; }
+        string IAudioControlSession.ExePath { get => this._exePath; }
+        string IAudioControlSession.ExeId { get => this.ASII.ExeId; }
 
         public void Dispose()
         {

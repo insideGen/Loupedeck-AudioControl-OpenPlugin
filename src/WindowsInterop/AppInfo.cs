@@ -47,25 +47,29 @@
             AppInfo appInfo = null;
             if (hProcess != IntPtr.Zero)
             {
+                int capacity = 2000;
+                StringBuilder builder = new StringBuilder(capacity);
+                if (Kernel32.QueryFullProcessImageName(hProcess, 0, builder, ref capacity) != 0)
+                {
+                    appInfo = FromPath(builder.ToString());
+                }
                 if (AppxPackage.IsPackagedProcess(hProcess))
                 {
+                    if (appInfo == null)
+                    {
+                        appInfo = new AppInfo();
+                    }
                     AppxPackage appxPackage = AppxPackage.FromProcess(hProcess);
-
-                    appInfo = new AppInfo();
-                    appInfo.ProcessId = Kernel32.GetProcessId(hProcess);
                     appInfo.ExePath = appxPackage.Path;
-                    appInfo.DisplayName = appxPackage.DisplayName;
+                    if (!appxPackage.DisplayName.StartsWith("ms-resource:"))
+                    {
+                        appInfo.DisplayName = appxPackage.DisplayName;
+                    }
                     appInfo.LogoPath = appxPackage.ApplicationUserModelId;
                 }
-                else
+                if (appInfo != null)
                 {
-                    int capacity = 2000;
-                    StringBuilder builder = new StringBuilder(capacity);
-                    if (Kernel32.QueryFullProcessImageName(hProcess, 0, builder, ref capacity) != 0)
-                    {
-                        appInfo = FromPath(builder.ToString());
-                        appInfo.ProcessId = Kernel32.GetProcessId(hProcess);
-                    }
+                    appInfo.ProcessId = Kernel32.GetProcessId(hProcess);
                 }
             }
             return appInfo;

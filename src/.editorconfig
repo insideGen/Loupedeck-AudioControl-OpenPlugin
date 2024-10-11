@@ -221,6 +221,8 @@ dotnet_diagnostic.IDE0051.severity = none
 dotnet_diagnostic.IDE0052.severity = none
 dotnet_diagnostic.IDE0058.severity = none
 dotnet_diagnostic.IDE0059.severity = none
+# IDE0090: Simplify new expression
+dotnet_diagnostic.IDE0090.severity = none
 # IDE1006: Styles d'affectation de noms
 dotnet_diagnostic.IDE1006.severity = none
 

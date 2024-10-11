@@ -30,47 +30,52 @@
 
         public static bool TryGetAudioControl(string endpointId, out IAudioControl audioControl)
         {
-            if (!string.IsNullOrEmpty(endpointId))
+            if (TryGetEndpointType(endpointId, out EndpointType? type))
             {
-                if (TryGetEndpointType(endpointId, out EndpointType? type))
+                if (type == EndpointType.Device)
                 {
-                    if (type == EndpointType.Device)
+                    if (AudioControl.MMAudio.Devices.FirstOrDefault(x => x.Id == endpointId) is IAudioControlDevice device)
                     {
-                        if (AudioControl.MMAudio.Devices.FirstOrDefault(x => x.Id == endpointId) is IAudioControlDevice device)
+                        audioControl = device;
+                        return true;
+                    }
+                }
+                else if (type == EndpointType.Session)
+                {
+                    IEnumerable<IAudioControlSession> sessions = AudioControl.MMAudio.RenderSessions.Where(x => x.IsSystemSoundsSession == true || x.State != AudioSessionState.Expired).OrderByDescending(x => x.State);
+                    AudioSessionInstanceIdentifier asii = AudioSessionInstanceIdentifier.FromString(endpointId);
+                    if (asii.ExeId == null && !asii.ExeId.Contains(Guid.Empty.ToString()) && asii.ProcessId == -1)
+                    {
+                        if (sessions.FirstOrDefault(x => x.DeviceId == asii.DeviceId && x.ExeId == asii.ExeId) is IAudioControlSession session1)
                         {
-                            audioControl = device;
+                            audioControl = session1;
                             return true;
                         }
                     }
-                    else if (type == EndpointType.Session)
+                    if(!asii.ExeId.Contains(Guid.Empty.ToString()))
                     {
-                        AudioSessionInstanceIdentifier asii = new AudioSessionInstanceIdentifier(endpointId);
-                        IEnumerable<AudioSessionControl> sessions = AudioControl.MMAudio.RenderSessions.Where(x => x.IsSystemSoundsSession == true || x.State != AudioSessionState.Expired).OrderByDescending(x => x.State);
-                        if (!string.IsNullOrEmpty(asii.ExePath))
+                        if (sessions.FirstOrDefault(x => x.ExeId == asii.ExeId) is IAudioControlSession session1)
                         {
-                            if (asii.ProcessId > 0 && sessions.FirstOrDefault(x => x.AudioSessionInstanceIdentifier.ExePath == asii.ExePath && x.AudioSessionInstanceIdentifier.ProcessId == asii.ProcessId) is IAudioControlSession session1)
-                            {
-                                audioControl = session1;
-                                return true;
-                            }
-                            else if (sessions.FirstOrDefault(x => x.AudioSessionInstanceIdentifier.ExePath == asii.ExePath) is IAudioControlSession session2)
-                            {
-                                audioControl = session2;
-                                return true;
-                            }
-                            else if (sessions.FirstOrDefault(x => x.AudioSessionInstanceIdentifier.ProcessId == asii.ProcessId) is IAudioControlSession session3)
-                            {
-                                audioControl = session3;
-                                return true;
-                            }
+                            audioControl = session1;
+                            return true;
                         }
-                        else
+                    }
+                    if (asii.ExePath != null)
+                    {
+                        if (sessions.FirstOrDefault(x => x.ExePath == asii.ExePath && x.ProcessId == asii.ProcessId) is IAudioControlSession session2)
                         {
-                            if (sessions.FirstOrDefault(x => x.SessionInstanceIdentifier.Equals(asii.ToString())) is IAudioControlSession session)
-                            {
-                                audioControl = session;
-                                return true;
-                            }
+                            audioControl = session2;
+                            return true;
+                        }
+                        if (sessions.FirstOrDefault(x => x.ExePath == asii.ExePath) is IAudioControlSession session3)
+                        {
+                            audioControl = session3;
+                            return true;
+                        }
+                        if(sessions.FirstOrDefault(x => x.ProcessId == asii.ProcessId) is IAudioControlSession session4)
+                        {
+                            audioControl = session4;
+                            return true;
                         }
                     }
                 }
@@ -83,7 +88,6 @@
         {
             AudioImageData audioData = new AudioImageData();
 
-            audioData.Id = audioControl.Id;
             audioData.DisplayName = audioControl.DisplayName;
             audioData.UnmutedIconPath = audioControl.IconPath;
 
@@ -94,6 +98,7 @@
 
             if (audioControl is IAudioControlDevice device)
             {
+                audioData.Id = device.Id;
                 if (audioControl is AudioControl)
                 {
                     audioData.IsActive = false;
@@ -132,12 +137,8 @@
             }
             else if (audioControl is IAudioControlSession session)
             {
+                audioData.Id = session.InstanceId;
                 audioData.IsActive = session.State != AudioSessionState.Expired || session.IsSystemSoundsSession;
-                if (!session.IsSystemSoundsSession)
-                {
-                    audioData.UnmutedIconPath = session.ExePath;
-                    audioData.MutedIconPath = null;
-                }
             }
 
             if (audioData.IsActive && PluginSettings.PeakMeterEnabled)
