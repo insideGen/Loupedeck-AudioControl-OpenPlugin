@@ -10,12 +10,11 @@
 
         public AudioPolicyConfig1()
         {
-            IntPtr hString;
             string classId = "Windows.Media.Internal.AudioPolicyConfig";
             Guid iid = typeof(IAudioPolicyConfig1).GUID;
 
             // Create the HSTRING using the existing WindowsCreateString function.
-            if (Combase.WindowsCreateString(classId, classId.Length, out hString) == HRESULT.S_OK)
+            if (Combase.WindowsCreateString(classId, classId.Length, out IntPtr hString) == HRESULT.S_OK)
             {
                 try
                 {
@@ -24,29 +23,29 @@
                     {
                         try
                         {
-                            // Use Marshal.QueryInterface to explicitly get the IAudioPolicyConfig1 interface
+                            // Use Marshal.QueryInterface to explicitly get the IAudioPolicyConfig1 interface.
                             Guid audioPolicyConfigIID = typeof(IAudioPolicyConfig1).GUID;
                             IntPtr audioPolicyConfigPtr;
 
-                            // QueryInterface using Marshal.QueryInterface
+                            // QueryInterface using Marshal.QueryInterface.
                             int result = Marshal.QueryInterface(factoryPtr, ref audioPolicyConfigIID, out audioPolicyConfigPtr);
 
-                            if (result == 0) // S_OK == 0
+                            if (result == 0) // S_OK = 0
                             {
                                 this.audioPolicyConfigInterface = Marshal.GetObjectForIUnknown(audioPolicyConfigPtr) as IAudioPolicyConfig1;
 
-                                // Release the queried interface after use
+                                // Release the queried interface after use.
                                 Marshal.Release(audioPolicyConfigPtr);
                             }
                             else
                             {
-                                // Handle case where QueryInterface fails
+                                // Handle case where QueryInterface fails.
                                 throw new InvalidOperationException("Failed to query IAudioPolicyConfig1 interface.");
                             }
                         }
                         finally
                         {
-                            // Release the COM object
+                            // Release the COM object.
                             Marshal.Release(factoryPtr);
                         }
                     }
