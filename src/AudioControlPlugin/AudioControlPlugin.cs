@@ -1,25 +1,27 @@
 namespace Loupedeck.AudioControlPlugin
 {
+    using System;
     using System.Timers;
 
     // This class contains the plugin-level logic of the Loupedeck plugin.
+
     public class AudioControlPlugin : Plugin
     {
         public static Timer RefreshTimer { get; }
 
+        // Gets a value indicating whether this is an API-only plugin.
+        public override Boolean UsesApplicationApiOnly => true;
+
+        // Gets a value indicating whether this is a Universal plugin or an Application plugin.
+        public override Boolean HasNoApplication => true;
+
+        // Initializes a new instance of the plugin class.
         static AudioControlPlugin()
         {
             AudioControlPlugin.RefreshTimer = new Timer();
         }
 
-        // Gets a value indicating whether this is an API-only plugin.
-        public override bool UsesApplicationApiOnly { get; } = true;
-
-        // Gets a value indicating whether this is a Universal plugin or an Application plugin.
-        public override bool HasNoApplication { get; } = true;
-
-        // Initializes a new instance of the plugin class.
-        public AudioControlPlugin() : base()
+        public AudioControlPlugin()
         {
             // Initialize the plugin log.
             PluginLog.Init(this.Log);
