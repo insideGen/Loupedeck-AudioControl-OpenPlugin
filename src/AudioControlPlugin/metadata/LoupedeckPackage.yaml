@@ -12,7 +12,7 @@ name: AudioControl
 displayName: AudioControl
 
 # Short description of the plugin.
-description: Control Windows audio from your Loupedeck.
+description: "Control Windows audio from your Loupedeck: volume adjusment, mute/unmute command, default device management, peak meter."
 
 # Name of the plugin library file.
 pluginFileName: AudioControlPlugin.dll
