@@ -510,6 +510,20 @@
                                 device.Muted = muted;
                             }
                         }
+                        else if (audioControl is IAudioControlSession audioControlSession)
+                        {
+                            bool muted = !audioControlSession.Muted;
+                            foreach (IAudioControlSession session in AudioControl.MMAudio.RenderSessions)
+                            {
+                                if (!string.IsNullOrEmpty(session.DisplayName))
+                                {
+                                    if (!this.KeyValuePairs.Keys.Any(x => (AudioSessionInstanceIdentifier.FromString(x) is AudioSessionInstanceIdentifier asii) && ((asii.ExePath == session.ExePath) || (session.ExeId.Equals(Guid.Empty.ToString()) && asii.ExeId == session.ExeId))))
+                                    {
+                                        session.Muted = muted;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

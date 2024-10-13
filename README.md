@@ -31,7 +31,7 @@ Displays volume and peak meter and allows volume control.
 | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Single tap | Select the endpoint for the channel defined in the configuration if Channel is not set to None, otherwise nothing.        |
 | Double tap | Mute/unmute endpoint defined in the configuration.                                                                        |
-| Long press | Only for device, mute all devices of this type if unmuted, otherwise unmute.                                              |
+| Long press | Mute/unmute all endpoint of this type (Capture, Render or Application) defined in the configuration.                      |
 
 ### Audio encoder action [Adjustment with reset]
 
