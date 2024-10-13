@@ -72,11 +72,13 @@
             {
                 if (AudioControl.TryGetAudioControl(actionParameter, out IAudioControl audioControl))
                 {
-                    AudioControl.MMAudio.AudioPolicyConfig.SetPersistedDefaultAudioEndpoint(this.Session.ProcessId, this.Flow, audioControl.Id);
+                    AudioControl.MMAudio.AudioPolicyConfig.SetPersistedDefaultAudioEndpoint((uint)this.Session.ProcessId, this.Flow, Role.Multimedia, audioControl.Id);
+                    AudioControl.MMAudio.AudioPolicyConfig.SetPersistedDefaultAudioEndpoint((uint)this.Session.ProcessId, this.Flow, Role.Console, audioControl.Id);
                 }
                 else
                 {
-                    AudioControl.MMAudio.AudioPolicyConfig.SetPersistedDefaultAudioEndpoint(this.Session.ProcessId, this.Flow, null);
+                    AudioControl.MMAudio.AudioPolicyConfig.SetPersistedDefaultAudioEndpoint((uint)this.Session.ProcessId, this.Flow, Role.Multimedia, null);
+                    AudioControl.MMAudio.AudioPolicyConfig.SetPersistedDefaultAudioEndpoint((uint)this.Session.ProcessId, this.Flow, Role.Console, null);
                 }
                 this.LeavePage();
             }

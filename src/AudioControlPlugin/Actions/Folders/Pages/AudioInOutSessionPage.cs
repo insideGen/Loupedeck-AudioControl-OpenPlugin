@@ -36,8 +36,9 @@
             if (actionParameter == "Capture")
             {
                 iconPath = AudioCaptureDevicesFolder.ICON_RESOURCE_PATH;
-                if (AudioControl.MMAudio.AudioPolicyConfig.GetPersistedDefaultAudioEndpoint(this.Session.ProcessId, DataFlow.Capture, out string deviceId))
+                try
                 {
+                    string deviceId = AudioControl.MMAudio.AudioPolicyConfig.GetPersistedDefaultAudioEndpoint((uint)this.Session.ProcessId, DataFlow.Capture, Role.Multimedia | Role.Console);
                     if (string.IsNullOrEmpty(deviceId))
                     {
                         deviceName = "Default";
@@ -47,12 +48,17 @@
                         deviceName = $"{device.DeviceDescription}";
                     }
                 }
+                catch
+                {
+
+                }
             }
             else if (actionParameter == "Render")
             {
                 iconPath = AudioRenderDevicesFolder.ICON_RESOURCE_PATH;
-                if (AudioControl.MMAudio.AudioPolicyConfig.GetPersistedDefaultAudioEndpoint(this.Session.ProcessId, DataFlow.Render, out string deviceId))
+                try
                 {
+                    string deviceId = AudioControl.MMAudio.AudioPolicyConfig.GetPersistedDefaultAudioEndpoint((uint)this.Session.ProcessId, DataFlow.Render, Role.Multimedia | Role.Console);
                     if (string.IsNullOrEmpty(deviceId))
                     {
                         deviceName = "Default";
@@ -61,6 +67,10 @@
                     {
                         deviceName = $"{device.DeviceDescription}";
                     }
+                }
+                catch
+                {
+
                 }
             }
             PluginImage.GetImageSize(imageSize, out int width, out int height);
