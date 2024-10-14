@@ -2,6 +2,8 @@
 
 This plugin allows you to control the volume of render and capture devices and display peak meter on each. As well as audio sessions associated with render devices (audio stream between applications and audio endpoint devices).
 
+![Peak meter example](./media/peak-meter.gif "Peak meter example")
+
 It also allows you to set default communication and multimedia devices and input/output device for each application.
 
 ## Installation
