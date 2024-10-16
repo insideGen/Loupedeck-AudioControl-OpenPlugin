@@ -10,6 +10,16 @@
     {
         private enum Command
         {
+#if DEBUG
+            PluginDataDirectory = 1,
+            FPS = 2,
+            PeakMeterEnabled = 3,
+            IsWindowsIconStyle = 4,
+            FolderDecorationEnabled = 5,
+            BlueLightFilterEnabled = 6,
+            SaveImageOnDisk = 7,
+            ClearAllSettings = 8
+#else
             PluginDataDirectory = -1,
             FPS = 2,
             PeakMeterEnabled = 3,
@@ -18,6 +28,7 @@
             BlueLightFilterEnabled = 6,
             SaveImageOnDisk = -7,
             ClearAllSettings = -8
+#endif
         }
 
         private readonly int[] fpsValues = { 10, 20, 30 };

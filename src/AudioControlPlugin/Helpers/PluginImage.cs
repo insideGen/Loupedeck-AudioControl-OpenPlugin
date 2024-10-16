@@ -27,20 +27,22 @@
 
         public static BitmapImage ToBitmapImage(Bitmap image)
         {
-            //if (PluginSettings.SaveImageOnDisk)
-            //{
-            //    if (!string.IsNullOrEmpty(PluginData.Directory))
-            //    {
-            //        string path = Path.Combine(PluginData.Directory, DateTime.Now.GetTotalMilliseconds() + ".png");
-            //        try
-            //        {
-            //            image.Save(path, ImageFormat.Png);
-            //        }
-            //        catch
-            //        {
-            //        }
-            //    }
-            //}
+#if DEBUG
+            if (PluginSettings.SaveImageOnDisk)
+            {
+                if (IoHelpers.EnsureDirectoryExists(PluginData.Directory))
+                {
+                    string path = Path.Combine(PluginData.Directory, DateTime.Now.GetTotalMilliseconds() + ".png");
+                    try
+                    {
+                        image.Save(path, ImageFormat.Png);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+#endif
             ImageConverter converter = new ImageConverter();
             return BitmapImage.FromArray((byte[])converter.ConvertTo(image, typeof(byte[])));
         }
