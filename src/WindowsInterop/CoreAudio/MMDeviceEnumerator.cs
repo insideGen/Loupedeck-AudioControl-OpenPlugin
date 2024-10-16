@@ -53,21 +53,34 @@
         /// <summary>
         /// Get default audio endpoint.
         /// </summary>
-        public MMDevice GetDefaultAudioEndpoint(DataFlow dataFlow, Role role)
+        public bool GetDefaultAudioEndpoint(DataFlow dataFlow, Role role, out MMDevice endpoint)
         {
-            Marshal.ThrowExceptionForHR(this.mmDeviceEnumeratorComObj.GetDefaultAudioEndpoint(dataFlow, role, out IMMDevice device));
-            return new MMDevice(device);
+            try
+            {
+                Marshal.ThrowExceptionForHR(this.mmDeviceEnumeratorComObj.GetDefaultAudioEndpoint(dataFlow, role, out IMMDevice iendpoint));
+                endpoint = new MMDevice(iendpoint);
+                return true;
+            }
+            catch
+            {
+                endpoint = null;
+                return false;
+            }
         }
 
         /// <summary>
         /// Get default audio endpoint Id.
         /// </summary>
-        public string GetDefaultAudioEndpointId(DataFlow dataFlow, Role role)
+        public bool GetDefaultAudioEndpointId(DataFlow dataFlow, Role role, out string endpointId)
         {
-            using (MMDevice device = this.GetDefaultAudioEndpoint(dataFlow, role))
+            if (this.GetDefaultAudioEndpoint(dataFlow, role, out MMDevice endpoint))
             {
-                return device.Id;
+                endpointId = endpoint.Id;
+                endpoint.Dispose();
+                return true;
             }
+            endpointId = null;
+            return false;
         }
 
         /// <summary>

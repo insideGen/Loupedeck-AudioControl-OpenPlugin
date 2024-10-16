@@ -18,10 +18,10 @@
 
         public AudioPolicyConfig AudioPolicyConfig { get; }
 
-        public MMDevice DefaultMultimediaCapture { get; private set; }
-        public MMDevice DefaultCommunicationsCapture { get; private set; }
-        public MMDevice DefaultMultimediaRender { get; private set; }
-        public MMDevice DefaultCommunicationsRender { get; private set; }
+        public MMDevice DefaultMultimediaCapture { get; private set; } = null;
+        public MMDevice DefaultCommunicationsCapture { get; private set; } = null;
+        public MMDevice DefaultMultimediaRender { get; private set; } = null;
+        public MMDevice DefaultCommunicationsRender { get; private set; } = null;
 
         public ObservableCollection<MMDevice> Devices { get; }
 
@@ -59,11 +59,23 @@
 
             this.AudioPolicyConfig = new AudioPolicyConfig();
 
-            this.DefaultMultimediaCapture = this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
-            this.DefaultCommunicationsCapture = this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
+            if (this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia, out MMDevice multimediaCapture))
+            {
+                this.DefaultMultimediaCapture = multimediaCapture;
+            }
+            if (this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications, out MMDevice communicationsCapture))
+            {
+                this.DefaultCommunicationsCapture = communicationsCapture;
+            }
 
-            this.DefaultMultimediaRender = this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-            this.DefaultCommunicationsRender = this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Communications);
+            if (this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia, out MMDevice multimediaRender))
+            {
+                this.DefaultMultimediaRender = multimediaRender;
+            }
+            if (this._deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Communications, out MMDevice communicationsRender))
+            {
+                this.DefaultCommunicationsRender = communicationsRender;
+            }
 
             this.Devices = new ObservableCollection<MMDevice>(this._deviceEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All));
 

@@ -124,13 +124,25 @@
                 {
                     if (device.DataFlow == DataFlow.Capture)
                     {
-                        audioData.IsCommunicationsDefault = device.Id == AudioControl.MMAudio.DefaultCommunicationsCapture.Id;
-                        audioData.IsMultimediaDefault = device.Id == AudioControl.MMAudio.DefaultMultimediaCapture.Id;
+                        if (AudioControl.MMAudio.DefaultCommunicationsCapture != null)
+                        {
+                            audioData.IsCommunicationsDefault = device.Id == AudioControl.MMAudio.DefaultCommunicationsCapture.Id;
+                        }
+                        if (AudioControl.MMAudio.DefaultMultimediaCapture != null)
+                        {
+                            audioData.IsMultimediaDefault = device.Id == AudioControl.MMAudio.DefaultMultimediaCapture.Id;
+                        }
                     }
                     else if (device.DataFlow == DataFlow.Render)
                     {
-                        audioData.IsCommunicationsDefault = device.Id == AudioControl.MMAudio.DefaultCommunicationsRender.Id;
-                        audioData.IsMultimediaDefault = device.Id == AudioControl.MMAudio.DefaultMultimediaRender.Id;
+                        if (AudioControl.MMAudio.DefaultCommunicationsRender != null)
+                        {
+                            audioData.IsCommunicationsDefault = device.Id == AudioControl.MMAudio.DefaultCommunicationsRender.Id;
+                        }
+                        if (AudioControl.MMAudio.DefaultMultimediaRender != null)
+                        {
+                            audioData.IsMultimediaDefault = device.Id == AudioControl.MMAudio.DefaultMultimediaRender.Id;
+                        }
                     }
                     audioData.Volume = (float)Math.Round(device.Volume, 2);
                 }

@@ -6,24 +6,24 @@
 
     public class AudioImageData : IActionImageData, IEquatable<AudioImageData>
     {
-        public string Id { get; set; }
-        public DataFlow DataFlow { get; set; }
+        public string Id { get; set; } = null;
+        public DataFlow DataFlow { get; set; } = DataFlow.All;
 
-        public bool NotFound { get; set; }
-        public string DisplayName { get; set; }
-        public string UnmutedIconPath { get; set; }
-        public string MutedIconPath { get; set; }
-        public bool Highlighted { get; set; }
-        public bool IsActive { get; set; }
+        public bool NotFound { get; set; } = false;
+        public string DisplayName { get; set; } = null;
+        public string UnmutedIconPath { get; set; } = null;
+        public string MutedIconPath { get; set; } = null;
+        public bool Highlighted { get; set; } = false;
+        public bool IsActive { get; set; } = false;
 
-        public bool Muted { get; set; }
-        public float Volume { get; set; }
-        public float VolumeScalar { get; set; }
-        public float PeakL { get; set; }
-        public float PeakR { get; set; }
+        public bool Muted { get; set; } = false;
+        public float Volume { get; set; } = 0.0f;
+        public float VolumeScalar { get; set; } = 0.0f;
+        public float PeakL { get; set; } = 0.0f;
+        public float PeakR { get; set; } = 0.0f;
 
-        public bool IsCommunicationsDefault { get; set; }
-        public bool IsMultimediaDefault { get; set; }
+        public bool IsCommunicationsDefault { get; set; } = false;
+        public bool IsMultimediaDefault { get; set; } = false;
 
         public bool Equals(AudioImageData other)
         {

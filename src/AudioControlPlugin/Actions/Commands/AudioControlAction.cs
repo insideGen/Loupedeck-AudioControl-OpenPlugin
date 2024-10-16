@@ -236,22 +236,22 @@
 
                 if (type == EndpointType.Capture)
                 {
-                    if (endpointId.Equals(COMMUNICATIONS_NAME))
+                    if (endpointId.Equals(COMMUNICATIONS_NAME) && AudioControl.MMAudio.DefaultCommunicationsCapture != null)
                     {
                         endpointId = AudioControl.MMAudio.DefaultCommunicationsCapture.Id;
                     }
-                    else if (endpointId.Equals(MULTIMEDIA_NAME))
+                    else if (endpointId.Equals(MULTIMEDIA_NAME) && AudioControl.MMAudio.DefaultMultimediaCapture != null)
                     {
                         endpointId = AudioControl.MMAudio.DefaultMultimediaCapture.Id;
                     }
                 }
                 else if (type == EndpointType.Render)
                 {
-                    if (endpointId.Equals(COMMUNICATIONS_NAME))
+                    if (endpointId.Equals(COMMUNICATIONS_NAME) && AudioControl.MMAudio.DefaultCommunicationsRender != null)
                     {
                         endpointId = AudioControl.MMAudio.DefaultCommunicationsRender.Id;
                     }
-                    else if (endpointId.Equals(MULTIMEDIA_NAME))
+                    else if (endpointId.Equals(MULTIMEDIA_NAME) && AudioControl.MMAudio.DefaultMultimediaRender != null)
                     {
                         endpointId = AudioControl.MMAudio.DefaultMultimediaRender.Id;
                     }
@@ -377,8 +377,8 @@
 
         public bool OnLoad()
         {
-            AudioControlPlugin.RefreshTimer.Elapsed += this.Plugin_OnElapsed;
             this.Parent.ActionImageChanged();
+            AudioControlPlugin.RefreshTimer.Elapsed += this.Plugin_OnElapsed;
             return true;
         }
 

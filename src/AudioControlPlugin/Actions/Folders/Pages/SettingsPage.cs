@@ -116,10 +116,9 @@
             {
                 if (actionParameter == Command.PluginDataDirectory.ToString())
                 {
-                    string pluginDataDirectory = base.Folder.Plugin.GetPluginDataDirectory();
-                    if (IoHelpers.EnsureDirectoryExists(pluginDataDirectory))
+                    if (IoHelpers.EnsureDirectoryExists(PluginData.Directory))
                     {
-                        Process.Start(pluginDataDirectory);
+                        Process.Start("explorer.exe", PluginData.Directory);
                     }
                 }
                 else if (actionParameter == Command.FPS.ToString())

@@ -26,28 +26,39 @@
             {
                 throw new ArgumentException("DataFlow.All is not supported.");
             }
+
             this.DataFlow = dataFlow;
             this.StateMask = stateMask;
+
             this.MMDeviceEnumerator = new MMDeviceEnumerator();
             this.MMDeviceEnumerator.DeviceAdded += this.OnDeviceAdded;
             this.MMDeviceEnumerator.DeviceRemoved += this.OnDeviceRemoved;
             this.MMDeviceEnumerator.DeviceStateChanged += this.OnDeviceStateChanged;
             this.MMDeviceEnumerator.DevicePropertyChanged += this.OnPropertyValueChanged;
             this.MMDeviceEnumerator.DefaultDeviceChanged += this.OnDefaultDeviceChanged;
+
             this.Items = new ObservableCollection<MMDevice>(this.MMDeviceEnumerator.EnumAudioEndpoints(this.DataFlow, this.StateMask));
-            this.DefaultDeviceId = new DefaultDeviceId
+
+            this.DefaultDeviceId = new DefaultDeviceId();
+            if (this.MMDeviceEnumerator.GetDefaultAudioEndpointId(this.DataFlow, Role.Communications, out string communicationsEndpointId))
             {
-                Communication = this.MMDeviceEnumerator.GetDefaultAudioEndpointId(this.DataFlow, Role.Communications),
-                Console = this.MMDeviceEnumerator.GetDefaultAudioEndpointId(this.DataFlow, Role.Console),
-                Multimedia = this.MMDeviceEnumerator.GetDefaultAudioEndpointId(this.DataFlow, Role.Multimedia)
-            };
+                this.DefaultDeviceId.Communication = communicationsEndpointId;
+            }
+            if (this.MMDeviceEnumerator.GetDefaultAudioEndpointId(this.DataFlow, Role.Console, out string consoleEndpointId))
+            {
+                this.DefaultDeviceId.Console = consoleEndpointId;
+            }
+            if (this.MMDeviceEnumerator.GetDefaultAudioEndpointId(this.DataFlow, Role.Multimedia, out string multimediaEndpointId))
+            {
+                this.DefaultDeviceId.Multimedia = multimediaEndpointId;
+            }
         }
 
         public bool IsDefaultDevice(string deviceId)
         {
-            return this.DefaultDeviceId.Communication == deviceId
-                || this.DefaultDeviceId.Console == deviceId
-                || this.DefaultDeviceId.Multimedia == deviceId;
+            return (!string.IsNullOrWhiteSpace(this.DefaultDeviceId.Communication) && this.DefaultDeviceId.Communication == deviceId)
+                || (!string.IsNullOrWhiteSpace(this.DefaultDeviceId.Console) && this.DefaultDeviceId.Console == deviceId)
+                || (!string.IsNullOrWhiteSpace(this.DefaultDeviceId.Multimedia) && this.DefaultDeviceId.Multimedia == deviceId);
         }
 
         private void OnDeviceStateChanged(object sender, DeviceStateEventArgs e)
@@ -103,20 +114,18 @@
         {
             if (e.Flow == this.DataFlow)
             {
-                DefaultDeviceId defaultDeviceId = this.DefaultDeviceId;
                 if (e.Role == Role.Communications)
                 {
-                    defaultDeviceId.Communication = e.DefaultDeviceId;
+                    this.DefaultDeviceId.Communication = e.DefaultDeviceId;
                 }
                 else if(e.Role == Role.Console)
                 {
-                    defaultDeviceId.Console = e.DefaultDeviceId;
+                    this.DefaultDeviceId.Console = e.DefaultDeviceId;
                 }
                 else if(e.Role == Role.Multimedia)
                 {
-                    defaultDeviceId.Multimedia = e.DefaultDeviceId;
+                    this.DefaultDeviceId.Multimedia = e.DefaultDeviceId;
                 }
-                this.DefaultDeviceId = defaultDeviceId;
             }
             this.DefaultDeviceChanged?.Invoke(sender, e);
         }
