@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Drawing;
+    using System.Drawing.Imaging;
 
     internal class AudioImageFactory : IActionImageFactory<AudioImageData>
     {
@@ -212,7 +213,26 @@
                 }
                 else
                 {
-                    return PluginImage.ToBitmapImage(this.Draw(audioData, imageSize));
+                    Bitmap image = this.Draw(audioData, imageSize);
+#if DEBUG
+                    if (PluginSettings.SaveImageOnDisk)
+                    {
+                        if (IoHelpers.EnsureDirectoryExists(PluginData.Directory))
+                        {
+                            long timestamp = DateTime.Now.GetTotalMilliseconds();
+                            string path = Path.Combine(PluginData.Directory, $"{audioData.DisplayName}_{timestamp}.png");
+                            try
+                            {
+                                image.Save(path, ImageFormat.Png);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+#endif
+                    ImageConverter converter = new ImageConverter();
+                    return BitmapImage.FromArray((byte[])converter.ConvertTo(image, typeof(byte[])));
                 }
             }
         }

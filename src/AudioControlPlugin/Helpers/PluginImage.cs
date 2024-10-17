@@ -32,7 +32,8 @@
             {
                 if (IoHelpers.EnsureDirectoryExists(PluginData.Directory))
                 {
-                    string path = Path.Combine(PluginData.Directory, DateTime.Now.GetTotalMilliseconds() + ".png");
+                    long timestamp = DateTime.Now.GetTotalMilliseconds();
+                    string path = Path.Combine(PluginData.Directory, $"{timestamp}.png");
                     try
                     {
                         image.Save(path, ImageFormat.Png);
