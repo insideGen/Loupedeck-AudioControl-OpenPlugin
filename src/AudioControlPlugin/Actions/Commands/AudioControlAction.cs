@@ -526,6 +526,20 @@
                         }
                     }
                 }
+                else if (touchEvent.EventType == DeviceTouchEventType.Move)
+                {
+                    if (AudioControl.TryGetAudioControl(endpointId, out IAudioControl audioControl))
+                    {
+                        if (touchEvent.DeltaY > 0)
+                        {
+                            AudioControl.SetRelativeVolume(audioControl, -10);
+                        }
+                        else if (touchEvent.DeltaY < 0)
+                        {
+                            AudioControl.SetRelativeVolume(audioControl, 10);
+                        }
+                    }
+                }
             }
             return true;
         }
