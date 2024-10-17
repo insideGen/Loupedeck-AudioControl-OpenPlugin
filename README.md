@@ -2,7 +2,7 @@
 
 This plugin allows you to control the volume of render and capture devices and display peak meter on each. As well as audio sessions associated with render devices (audio stream between applications and audio endpoint devices).
 
-![Peak meter example](./media/peak-meter.gif "Peak meter example")
+![Peak meter example](./media/peak-meter-example.gif "Peak meter example")
 
 It also allows you to set default communication and multimedia devices and input/output device for each application.
 
@@ -18,6 +18,13 @@ Only available for Windows, tested with Loupedeck Live S.
 ### Audio touch action [Command]
 
 Displays volume and peak meter and allows volume control.
+
+![Unmuted capture icon](./media/capture-unmuted.png "Unmuted capture icon")
+![Muted capture icon](./media/capture-muted.png "Muted capture icon")
+![Unmuted render icon](./media/render-unmuted.png "Unmuted render icon")
+![Muted render icon](./media/render-muted.png "Muted render icon")
+![Unmuted application icon](./media/application-unmuted.png "Unmuted application icon")
+![Muted application icon](./media/application-muted.png "Muted application icon")
 
 **`Configuration`**
 
@@ -58,6 +65,8 @@ Displays volume and peak meter and allows volume control.
 
 Allows to mute/unmute all capture devices.
 
+![Mute/unmute all capture devices icon](./media/un-mute-all-capture.png "Mute/unmute all capture devices icon")
+
 **`Touch screen`**
 
 | Gesture    | Description                          |
@@ -69,6 +78,8 @@ Allows to mute/unmute all capture devices.
 
 Allows to mute/unmute all render devices.
 
+![Mute/unmute all render devices icon](./media/un-mute-all-render.png "Mute/unmute all render devices icon")
+
 **`Touch screen`**
 
 | Gesture    | Description                          |
@@ -76,7 +87,31 @@ Allows to mute/unmute all render devices.
 | Single tap | Mute all render devices.             |
 | Long press | Unmute all render devices.           |
 
+### All-in-one [Folder]
+
+Gathers all the folders.
+
+![All-in-one folder icon](./media/folder-all-in-one.png "All-in-one folder icon")
+
+#### Sub-folders
+
+![Capture page icon](./media/page-capture.png "Capture page icon")
+![Render page icon](./media/page-render.png "Render page icon")
+![Applications page icon](./media/page-applications.png "Applications page icon")
+![Multimedia page icon](./media/page-multimedia.png "Multimedia page icon")
+![Communication page icon](./media/page-communication.png "Communication page icon")
+![Settings page icon](./media/page-settings.png "Settings page icon")
+
+- Capture devices
+- Render devices
+- Applications
+- Multimedia (Multimedia capture device + Multimedia render device + Applications)
+- Communication (Communication capture device + Communication render device + Applications)
+- Settings
+
 ### Capture devices [Folder]
+
+![Capture folder icon](./media/folder-capture.png "Capture folder icon")
 
 #### Capture devices page
 
@@ -99,6 +134,8 @@ Displays all active capture devices and their peak meters (display peak meter on
 | Push       | Mute/unmute selected device.         |
 
 ### Render devices [Folder]
+
+![Render folder icon](./media/folder-render.png "Render folder icon")
 
 #### Render devices page
 
@@ -146,6 +183,8 @@ Configure input/output device for application.
 
 ### Applications [Folder]
 
+![Applications folder icon](./media/folder-applications.png "Applications folder icon")
+
 #### Applications page
 
 Displays all active applications and their peak meters.
@@ -171,6 +210,8 @@ Configure input/output device for application.
 
 ### Settings [Folder]
 
+![Settings folder icon](./media/folder-settings.png "Settings folder icon")
+
 #### Settings page
 
 | Setting           | Value               | Description                                                                          |
@@ -181,4 +222,4 @@ Configure input/output device for application.
 | Folder decoration | Yes, **No**         | Enable/disable folder icon decoration (a restart is required to apply this setting). |
 | Blue light filter | **Yes**, No         | Enable/disable blue light filter (a restart is required to apply this setting).      |
 
-*Values in bold are default.*
+*Default values are highlighted in bold.*
