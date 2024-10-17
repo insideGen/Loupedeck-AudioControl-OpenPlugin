@@ -196,7 +196,7 @@
             {
                 if (AudioControl.TryGetAudioControl(this._selectedActionName, out IAudioControl audioControl))
                 {
-                    AudioControl.SetVolume(audioControl, encoderEvent.Clicks);
+                    AudioControl.SetRelativeVolume(audioControl, encoderEvent.Clicks);
                 }
             }
             return false;

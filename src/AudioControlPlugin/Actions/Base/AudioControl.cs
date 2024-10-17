@@ -176,7 +176,7 @@
             audioControl.Muted = !audioControl.Muted;
         }
 
-        public static void SetVolume(IAudioControl audioControl, int diff)
+        public static void SetRelativeVolume(IAudioControl audioControl, int diff)
         {
             bool isScalar = true;
             float fltDiff, targetVolume;

@@ -539,7 +539,7 @@
                 {
                     if (AudioControl.TryGetAudioControl(endpointId, out IAudioControl audioControl))
                     {
-                        AudioControl.SetVolume(audioControl, encoderEvent.Clicks);
+                        AudioControl.SetRelativeVolume(audioControl, encoderEvent.Clicks);
                     }
                 }
                 else if (channel == ActionChannel.A)
@@ -548,7 +548,7 @@
                     {
                         if (AudioControl.TryGetAudioControl(endpointAId, out IAudioControl audioControlA))
                         {
-                            AudioControl.SetVolume(audioControlA, encoderEvent.Clicks);
+                            AudioControl.SetRelativeVolume(audioControlA, encoderEvent.Clicks);
                         }
                     }
                 }
@@ -558,7 +558,7 @@
                     {
                         if (AudioControl.TryGetAudioControl(endpointBId, out IAudioControl audioControlB))
                         {
-                            AudioControl.SetVolume(audioControlB, encoderEvent.Clicks);
+                            AudioControl.SetRelativeVolume(audioControlB, encoderEvent.Clicks);
                         }
                     }
                 }
@@ -568,7 +568,7 @@
                     {
                         if (AudioControl.TryGetAudioControl(endpointCId, out IAudioControl audioControlC))
                         {
-                            AudioControl.SetVolume(audioControlC, encoderEvent.Clicks);
+                            AudioControl.SetRelativeVolume(audioControlC, encoderEvent.Clicks);
                         }
                     }
                 }
