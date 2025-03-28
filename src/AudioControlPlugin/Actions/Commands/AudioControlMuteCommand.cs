@@ -13,6 +13,7 @@
             base.DisplayName = $"{DISPLAY_NAME}";
             base.Description = "";
             base.GroupName = null;
+            base.IsWidget = true;
 
             this.Action = new AudioControlAction(this);
         }

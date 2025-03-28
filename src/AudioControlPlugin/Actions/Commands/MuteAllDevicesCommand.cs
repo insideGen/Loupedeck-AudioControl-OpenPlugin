@@ -12,6 +12,7 @@
         {
             base.AddParameter(DataFlow.Capture.ToLower(), "Mute/unmute all capture devices", "Group action");
             base.AddParameter(DataFlow.Render.ToLower(), "Mute/unmute all render devices", "Group action");
+            base.IsWidget = true;
         }
 
         protected override BitmapImage GetCommandImage(string actionParameter, PluginImageSize imageSize)

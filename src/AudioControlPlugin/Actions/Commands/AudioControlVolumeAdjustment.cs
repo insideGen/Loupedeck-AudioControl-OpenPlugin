@@ -13,6 +13,7 @@
             base.DisplayName = $"{DISPLAY_NAME} - Adjustment";
             base.Description = "";
             base.GroupName = null;
+            base.IsWidget = true;
 
             base.ResetCommandDisplayName = $"{DISPLAY_NAME} - Adjustment reset";
 
