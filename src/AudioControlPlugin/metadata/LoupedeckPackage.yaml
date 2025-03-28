@@ -69,12 +69,12 @@ minimumLoupedeckVersion: 6.0
 license: MIT
 
 # URL of the plugin license.
-licenseUrl: https://github.com/insideGen/Loupedeck-AudioControl-OpenPlugin/blob/main/LICENSE
+licenseUrl: https://github.com/insideGen/Loupedeck-AudioControlPlugin/blob/main/LICENSE
 
 # URL of the support page where the users can send improvement suggestions and report bugs.
 # The URL is shown in Loupedeck Marketplace. The page can be for example a GitHub issues page.
 # NOTE: This setting is recommended when publishing the plugin in Loupedeck Marketplace.
-supportPageUrl: https://github.com/insideGen/Loupedeck-AudioControl-OpenPlugin/issues
+supportPageUrl: https://github.com/insideGen/Loupedeck-AudioControlPlugin/issues
 
 # URL of the plugin homepage. The URL is shown in Loupedeck Marketplace.
-homePageUrl: https://github.com/insideGen/Loupedeck-AudioControl-OpenPlugin
+homePageUrl: https://github.com/insideGen/Loupedeck-AudioControlPlugin
